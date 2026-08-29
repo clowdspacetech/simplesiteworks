@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="heroTitle heroDesc">
+  <title id="heroTitle">Local business website preview</title>
+  <desc id="heroDesc">A stylised browser window showing a calm local business homepage with map and services.</desc>
+  <defs>
+    <linearGradient id="heroSky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="55%" stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="heroCard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="24" fill="url(#heroSky)"/>
+  <rect x="36" y="36" width="568" height="348" rx="18" fill="#0b1020" stroke="#ffffff" stroke-opacity="0.12"/>
+  <rect x="36" y="36" width="568" height="44" rx="18" fill="#111827"/>
+  <rect x="36" y="62" width="568" height="18" fill="#111827"/>
+  <circle cx="60" cy="58" r="5" fill="#f87171"/>
+  <circle cx="78" cy="58" r="5" fill="#fbbf24"/>
+  <circle cx="96" cy="58" r="5" fill="#34d399"/>
+  <rect x="120" y="48" width="180" height="20" rx="10" fill="#1f2937"/>
+  <text x="132" y="62" fill="#9ca3af" font-family="ui-sans-serif, system-ui" font-size="11">yoursite.co.uk</text>
+
+  <rect x="64" y="108" width="240" height="12" rx="6" fill="#818cf8" opacity="0.85"/>
+  <rect x="64" y="136" width="280" height="22" rx="8" fill="#f8fafc"/>
+  <rect x="64" y="168" width="220" height="10" rx="5" fill="#94a3b8" opacity="0.7"/>
+  <rect x="64" y="188" width="180" height="10" rx="5" fill="#64748b" opacity="0.55"/>
+  <rect x="64" y="220" width="110" height="32" rx="16" fill="#6366f1"/>
+  <rect x="186" y="220" width="96" height="32" rx="16" fill="none" stroke="#94a3b8" stroke-opacity="0.5"/>
+
+  <rect x="360" y="108" width="208" height="200" rx="16" fill="url(#heroCard)" stroke="#ffffff" stroke-opacity="0.1"/>
+  <circle cx="464" cy="178" r="36" fill="#22d3ee" opacity="0.25"/>
+  <path d="M464 150c-16 0-28 12-28 28 0 22 28 44 28 44s28-22 28-44c0-16-12-28-28-28z" fill="#67e8f9" opacity="0.9"/>
+  <circle cx="464" cy="176" r="8" fill="#0f172a"/>
+  <rect x="392" y="248" width="144" height="10" rx="5" fill="#e2e8f0" opacity="0.55"/>
+  <rect x="412" y="268" width="104" height="8" rx="4" fill="#94a3b8" opacity="0.45"/>
+
+  <rect x="64" y="284" width="88" height="56" rx="12" fill="#1e293b" stroke="#334155"/>
+  <rect x="164" y="284" width="88" height="56" rx="12" fill="#1e293b" stroke="#334155"/>
+  <rect x="264" y="284" width="88" height="56" rx="12" fill="#1e293b" stroke="#334155"/>
+  <rect x="80" y="304" width="56" height="8" rx="4" fill="#a5b4fc"/>
+  <rect x="180" y="304" width="56" height="8" rx="4" fill="#67e8f9"/>
+  <rect x="280" y="304" width="56" height="8" rx="4" fill="#c4b5fd"/>
+</svg>

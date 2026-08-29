@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Image from "next/image";
 import PackageCard from "./PackageCard";
 import DemoCard from "./DemoCard";
 import PricingCard from "./PricingCard";
@@ -9,7 +10,19 @@ import FAQAccordion from "./FAQAccordion";
 import ContactForm from "./ContactForm";
 import DemoModal from "./DemoModal";
 import PackageCustomizer from "./PackageCustomizer";
-import { APP_OFFERINGS, BUSINESS_TYPES, DEMOS, FAQ_ITEMS, PACKAGES, type BusinessTypeId, type DemoId, type PackageId } from "../lib/site";
+import HeroVisual from "./HeroVisual";
+import Reveal from "./Reveal";
+import {
+  APP_OFFERINGS,
+  BUSINESS_TYPES,
+  DEMOS,
+  ENQUIRY_EMAIL,
+  FAQ_ITEMS,
+  PACKAGES,
+  type BusinessTypeId,
+  type DemoId,
+  type PackageId,
+} from "../lib/site";
 import { scrollToSection } from "../lib/scroll";
 
 export default function HomeExperience() {
@@ -29,9 +42,9 @@ export default function HomeExperience() {
 
   return (
     <>
-      <section className="relative overflow-hidden">
-        <div className="ssw-container grid items-center gap-12 py-20 md:grid-cols-2 md:gap-16 md:py-28">
-          <div className="space-y-7">
+      <section className="relative max-w-full overflow-x-clip">
+        <div className="ssw-container grid min-w-0 items-center gap-12 py-16 md:grid-cols-2 md:gap-16 md:py-28">
+          <Reveal className="min-w-0 space-y-7">
             <span className="ssw-kicker">Built for local businesses</span>
             <h1 className="ssw-h1">
               Simple websites
@@ -53,62 +66,40 @@ export default function HomeExperience() {
               <span>Typical delivery 2–3 weeks</span>
               <span>No technical knowledge needed</span>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="ssw-card p-0">
-            <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
-              <span className="h-2.5 w-2.5 rounded-full bg-indigo-400/80" />
-              <span className="h-2.5 w-2.5 rounded-full bg-violet-400/80" />
-              <span className="h-2.5 w-2.5 rounded-full bg-cyan-400/80" />
-              <span className="ml-3 rounded-md border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-zinc-400">
-                yoursite.co.uk
-              </span>
-            </div>
-            <div className="space-y-5 p-6 md:p-8">
-              <div className="text-xs font-medium uppercase tracking-wider text-indigo-300">Local & trusted</div>
-              <div className="font-display text-2xl font-extrabold tracking-tight text-white">Your business, found online.</div>
-              <p className="text-sm leading-relaxed text-zinc-400">
-                A calm, mobile-friendly site with services, photos, and a contact form — ready for customers this month.
-              </p>
-              <div className="grid grid-cols-3 gap-3">
-                {["Services", "Gallery", "Contact"].map((label) => (
-                  <div
-                    key={label}
-                    className="rounded-xl border border-white/10 bg-white/5 px-3 py-4 text-center text-xs font-medium text-zinc-300 backdrop-blur-lg"
-                  >
-                    {label}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <Reveal delay={2} className="min-w-0">
+            <HeroVisual />
+          </Reveal>
         </div>
       </section>
 
-      <section>
-        <div className="ssw-container grid gap-6 py-12 md:grid-cols-3 md:py-16">
+      <section className="max-w-full overflow-x-clip">
+        <div className="ssw-container ssw-grid grid gap-6 py-12 md:grid-cols-3 md:py-16">
           {[
             { title: "Clear pricing", body: "Packages from £299. No surprise invoices." },
             { title: "Fast delivery", body: "Most sites live in two to three weeks." },
             { title: "No tech stress", body: "We handle setup, hosting, and training." },
-          ].map((item) => (
-            <div key={item.title} className="ssw-card ssw-card-hover">
-              <h3 className="text-base font-extrabold tracking-tight text-white">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{item.body}</p>
-            </div>
+          ].map((item, index) => (
+            <Reveal key={item.title} delay={(index % 3) as 0 | 1 | 2 | 3}>
+              <div className="ssw-card ssw-card-hover h-full">
+                <h3 className="text-base font-extrabold tracking-tight text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-400">{item.body}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section id="packages" className="ssw-section">
         <div className="ssw-container">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <h2 className="ssw-h2">Packages</h2>
             <p className="mt-3 text-base leading-relaxed text-zinc-400">
               Choose the right package for your business — straightforward, affordable, and tailored.
             </p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          </Reveal>
+          <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
             {PACKAGES.map((item) => (
               <PackageCard
                 key={item.id}
@@ -126,13 +117,13 @@ export default function HomeExperience() {
 
       <section className="ssw-section pt-0">
         <div className="ssw-container">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <h2 className="ssw-h2">Sample demo websites</h2>
             <p className="mt-3 text-base leading-relaxed text-zinc-400">
               See the kind of site we build — then pick a package that matches your trade.
             </p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          </Reveal>
+          <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
             {DEMOS.map((demo) => (
               <DemoCard
                 key={demo.id}
@@ -149,13 +140,13 @@ export default function HomeExperience() {
 
       <section id="pricing" className="ssw-section pt-0">
         <div className="ssw-container">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <h2 className="ssw-h2">Pricing explained simply</h2>
             <p className="mt-3 text-base leading-relaxed text-zinc-400">
               One number. What’s included is written in plain English.
             </p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          </Reveal>
+          <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
             {PACKAGES.map((item) => (
               <PricingCard
                 key={item.id}
@@ -185,23 +176,36 @@ export default function HomeExperience() {
 
       <section className="ssw-section pt-0">
         <div className="ssw-container">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <h2 className="ssw-h2">Mobile app development</h2>
             <p className="mt-3 text-base leading-relaxed text-zinc-400">
               Booking, delivery, loyalty and customer apps built with React Native / Expo.
             </p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {APP_OFFERINGS.map((item) => (
-              <MobileAppCard key={item.title} title={item.title} desc={item.desc} />
-            ))}
+          </Reveal>
+          <div className="mt-10 grid min-w-0 grid-cols-1 items-start gap-8 lg:grid-cols-2">
+            <Reveal delay={1} className="min-w-0">
+              <div className="ssw-card overflow-hidden p-0">
+                <Image
+                  src="/illustrations/apps-pipeline.svg"
+                  alt="Animated-style delivery pipeline and mobile app preview"
+                  width={480}
+                  height={280}
+                  className="w-full max-w-full"
+                />
+              </div>
+            </Reveal>
+            <div className="ssw-grid grid grid-cols-1 gap-5 sm:grid-cols-2">
+              {APP_OFFERINGS.map((item) => (
+                <MobileAppCard key={item.title} title={item.title} desc={item.desc} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       <section id="contact" className="ssw-section">
-        <div className="ssw-container grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
-          <div>
+        <div className="ssw-container grid min-w-0 grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
+          <div className="min-w-0">
             <h2 className="ssw-h2">FAQ</h2>
             <p className="mt-3 mb-8 text-base leading-relaxed text-zinc-400">
               Straight answers before you get in touch.
@@ -209,7 +213,7 @@ export default function HomeExperience() {
             <FAQAccordion items={FAQ_ITEMS} />
           </div>
 
-          <div>
+          <div className="min-w-0">
             <h2 className="ssw-h2">Contact</h2>
             <p className="mt-3 mb-8 text-base leading-relaxed text-zinc-400">
               Tell us about the business. We’ll recommend a package.
@@ -219,6 +223,7 @@ export default function HomeExperience() {
               businessType={businessLabel}
               extras={extras}
               onPackageChange={setSelectedPackage}
+              enquiryEmail={ENQUIRY_EMAIL}
             />
           </div>
         </div>

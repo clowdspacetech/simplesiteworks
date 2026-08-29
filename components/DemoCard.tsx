@@ -18,7 +18,7 @@ export default function DemoCard({
     <button
       type="button"
       onClick={onView}
-      className="ssw-card ssw-card-hover group block w-full overflow-hidden p-0 text-left"
+      className="ssw-card ssw-card-hover group block w-full max-w-full overflow-hidden p-0 text-left"
     >
       <div className="relative h-48 w-full overflow-hidden bg-zinc-900/60">
         {src ? (

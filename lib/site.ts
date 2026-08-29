@@ -103,6 +103,26 @@ export const APP_OFFERINGS = [
   { title: "Loyalty Apps", desc: "Points and rewards" },
 ];
 
+/** Destination inbox for customer enquiries (override via NEXT_PUBLIC_ENQUIRY_EMAIL). */
+export const ENQUIRY_EMAIL =
+  process.env.NEXT_PUBLIC_ENQUIRY_EMAIL?.trim() || "clowdspace98@gmail.com";
+
+/**
+ * Practical email format check:
+ * - local part without spaces
+ * - domain with at least one dot
+ * - TLD 2+ letters
+ */
+const EMAIL_PATTERN =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
+export function isValidEmail(value: string): boolean {
+  const email = value.trim();
+  if (!email || email.length > 254) return false;
+  if (email.includes("..")) return false;
+  return EMAIL_PATTERN.test(email);
+}
+
 export function isPackageId(value: string | null | undefined): value is PackageId {
   return PACKAGES.some((pkg) => pkg.id === value);
 }

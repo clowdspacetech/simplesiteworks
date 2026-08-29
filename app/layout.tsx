@@ -51,9 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${inter.className} relative min-h-full bg-transparent text-zinc-100 antialiased`}>
         <AmbientBackground />
-        <div className="relative z-10 flex min-h-full flex-col">
+        <div className="ssw-shell relative z-10 flex min-h-full flex-col">
           <Header />
-          <div className="flex flex-1 flex-col">{children}</div>
+          <div className="flex min-w-0 flex-1 flex-col">{children}</div>
           <Footer />
         </div>
       </body>

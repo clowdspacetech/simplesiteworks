@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { PACKAGES, isPackageId, type PackageId } from "../lib/site";
+import { ENQUIRY_EMAIL, PACKAGES, isPackageId, isValidEmail, type PackageId } from "../lib/site";
 
 type Status = "idle" | "loading" | "done" | "whatsapp" | "error";
 
@@ -17,8 +17,10 @@ function validate(values: { name: string; email: string; phone: string; package:
   if (!values.name.trim() || values.name.trim().length < 2) {
     errors.name = "Please enter your name.";
   }
-  if (!values.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
-    errors.email = "Enter a valid email address.";
+  if (!values.email.trim()) {
+    errors.email = "Please enter your email address.";
+  } else if (!isValidEmail(values.email)) {
+    errors.email = "Please enter a valid email address (e.g. you@business.com).";
   }
   if (values.phone.trim() && !/^[\d\s+()-]{7,}$/.test(values.phone.trim())) {
     errors.phone = "Enter a valid phone number.";
@@ -34,12 +36,16 @@ export default function ContactForm({
   businessType,
   extras = [],
   onPackageChange,
+  enquiryEmail = ENQUIRY_EMAIL,
 }: {
   selectedPackage?: string;
   businessType?: string;
   extras?: string[];
   onPackageChange?: (pkg: PackageId) => void;
+  /** Destination address for customer enquiries. */
+  enquiryEmail?: string;
 }) {
+  const destinationEmail = enquiryEmail.trim() || ENQUIRY_EMAIL;
   const initialPackage = isPackageId(selectedPackage) ? selectedPackage : "Custom";
   const [pkg, setPkg] = useState<PackageId>(initialPackage);
   const [name, setName] = useState("");
@@ -78,6 +84,7 @@ export default function ContactForm({
       business: business.trim(),
       package: pkg,
       extras: extrasNote,
+      enquiryEmail: destinationEmail,
     };
 
     try {
@@ -116,6 +123,7 @@ export default function ContactForm({
       extrasNote ? `Extras: ${extrasNote}.` : null,
       email.trim() ? `Email: ${email.trim()}` : null,
       phone.trim() ? `Phone: ${phone.trim()}` : null,
+      `Please reply to ${destinationEmail}.`,
     ].filter(Boolean);
 
     window.open(`https://wa.me/?text=${encodeURIComponent(lines.join(" "))}`, "_blank", "noopener,noreferrer");
@@ -142,7 +150,7 @@ export default function ContactForm({
         <p className="mt-3 text-sm leading-relaxed text-zinc-400">
           {status === "whatsapp"
             ? "Your details are in the message. Send it when you’re ready — we’ll pick it up from there."
-            : "Thanks — we’ll reply within one working day with a clear next step."}
+            : `Thanks — we’ll reply to you from ${destinationEmail} within one working day.`}
         </p>
         <button type="button" onClick={resetForm} className="btn-secondary mt-8">
           Send another
@@ -153,6 +161,13 @@ export default function ContactForm({
 
   return (
     <form onSubmit={handleSubmit} className="ssw-card max-w-lg space-y-5" noValidate>
+      <p className="text-xs leading-relaxed text-zinc-500">
+        Enquiries go to{" "}
+        <a className="text-indigo-300 underline-offset-2 hover:underline" href={`mailto:${destinationEmail}`}>
+          {destinationEmail}
+        </a>
+        .
+      </p>
       <div>
         <label className="ssw-label" htmlFor="contact-name">
           Name
@@ -165,8 +180,13 @@ export default function ContactForm({
           className={`ssw-input ${errors.name ? "ssw-input-error" : ""}`}
           placeholder="Jane Smith"
           autoComplete="name"
+          aria-invalid={Boolean(errors.name)}
         />
-        {errors.name && <p className="mt-1.5 text-xs text-rose-300">{errors.name}</p>}
+        {errors.name && (
+          <p className="mt-1.5 text-xs text-rose-300" role="alert">
+            {errors.name}
+          </p>
+        )}
       </div>
       <div>
         <label className="ssw-label" htmlFor="contact-email">
@@ -176,13 +196,33 @@ export default function ContactForm({
           id="contact-email"
           name="email"
           type="email"
+          inputMode="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (errors.email) {
+              setErrors((prev) => ({ ...prev, email: undefined }));
+            }
+          }}
+          onBlur={() => {
+            if (email.trim() && !isValidEmail(email)) {
+              setErrors((prev) => ({
+                ...prev,
+                email: "Please enter a valid email address (e.g. you@business.com).",
+              }));
+            }
+          }}
           className={`ssw-input ${errors.email ? "ssw-input-error" : ""}`}
           placeholder="you@business.com"
           autoComplete="email"
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? "contact-email-error" : undefined}
         />
-        {errors.email && <p className="mt-1.5 text-xs text-rose-300">{errors.email}</p>}
+        {errors.email && (
+          <p id="contact-email-error" className="mt-1.5 text-xs text-rose-300" role="alert">
+            {errors.email}
+          </p>
+        )}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
@@ -197,8 +237,13 @@ export default function ContactForm({
             className={`ssw-input ${errors.phone ? "ssw-input-error" : ""}`}
             placeholder="07…"
             autoComplete="tel"
+            aria-invalid={Boolean(errors.phone)}
           />
-          {errors.phone && <p className="mt-1.5 text-xs text-rose-300">{errors.phone}</p>}
+          {errors.phone && (
+            <p className="mt-1.5 text-xs text-rose-300" role="alert">
+              {errors.phone}
+            </p>
+          )}
         </div>
         <div>
           <label className="ssw-label" htmlFor="contact-business">
@@ -230,6 +275,7 @@ export default function ContactForm({
             }
           }}
           className={`ssw-input ${errors.package ? "ssw-input-error" : ""}`}
+          aria-invalid={Boolean(errors.package)}
         >
           {PACKAGES.map((item) => (
             <option key={item.id} value={item.id}>
@@ -237,7 +283,11 @@ export default function ContactForm({
             </option>
           ))}
         </select>
-        {errors.package && <p className="mt-1.5 text-xs text-rose-300">{errors.package}</p>}
+        {errors.package && (
+          <p className="mt-1.5 text-xs text-rose-300" role="alert">
+            {errors.package}
+          </p>
+        )}
       </div>
       {extrasNote && (
         <p className="rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-3.5 py-2.5 text-xs text-cyan-100">
@@ -245,7 +295,7 @@ export default function ContactForm({
         </p>
       )}
       {banner && (
-        <p className="rounded-xl border border-rose-400/20 bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-200">
+        <p className="rounded-xl border border-rose-400/20 bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-200" role="alert">
           {banner}
         </p>
       )}

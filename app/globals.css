@@ -30,6 +30,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Media must never force the document wider than the viewport */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Page shell clips layout leaks without masking html/body scroll behaviour */
+.ssw-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.ssw-grid {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 ::selection {
   background: rgba(129, 140, 248, 0.35);
   color: #fff;
@@ -43,12 +65,16 @@ body {
 
 @layer components {
   .ssw-container {
-    @apply mx-auto w-full max-w-6xl px-6;
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-8;
+    max-width: min(72rem, 100%);
   }
 
   .ssw-section {
-    @apply py-16 md:py-24;
+    @apply py-12 md:py-24;
     scroll-margin-top: 6rem;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
   }
 
   .ssw-kicker {
@@ -91,8 +117,9 @@ body {
     transition: transform 500ms var(--ssw-ease), box-shadow 500ms var(--ssw-ease), border-color 500ms var(--ssw-ease);
   }
 
+  /* Scale enlarges painted box past grid cells and causes horizontal scroll */
   .ssw-card-hover {
-    @apply hover:-translate-y-1.5 hover:scale-[1.015];
+    @apply hover:-translate-y-1;
   }
 
   .ssw-card-hover:hover {
@@ -283,40 +310,40 @@ body {
 }
 
 .ambient-blob-a {
-  width: min(58vw, 720px);
-  height: min(58vw, 720px);
-  top: -18%;
-  left: -12%;
+  width: min(48vw, 560px);
+  height: min(48vw, 560px);
+  top: -12%;
+  left: -6%;
   background: #4f46e5;
   opacity: 0.55;
   animation: drift-a 28s var(--ssw-ease) infinite;
 }
 
 .ambient-blob-b {
-  width: min(52vw, 640px);
-  height: min(52vw, 640px);
-  top: 8%;
-  right: -18%;
+  width: min(42vw, 500px);
+  height: min(42vw, 500px);
+  top: 10%;
+  right: -8%;
   background: #a855f7;
   opacity: 0.48;
   animation: drift-b 34s var(--ssw-ease) infinite;
 }
 
 .ambient-blob-c {
-  width: min(48vw, 560px);
-  height: min(48vw, 560px);
-  bottom: -22%;
-  left: 22%;
+  width: min(40vw, 460px);
+  height: min(40vw, 460px);
+  bottom: -14%;
+  left: 24%;
   background: #22d3ee;
   opacity: 0.32;
   animation: drift-c 32s var(--ssw-ease) infinite;
 }
 
 .ambient-blob-d {
-  width: min(36vw, 420px);
-  height: min(36vw, 420px);
-  top: 42%;
-  left: 38%;
+  width: min(30vw, 360px);
+  height: min(30vw, 360px);
+  top: 44%;
+  left: 40%;
   background: #6366f1;
   opacity: 0.22;
   animation: drift-d 26s var(--ssw-ease) infinite;
@@ -347,7 +374,7 @@ body {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(9%, 14%, 0) scale(1.16);
+    transform: translate3d(4%, 6%, 0) scale(1.06);
   }
 }
 
@@ -357,7 +384,7 @@ body {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(-10%, 8%, 0) scale(1.12);
+    transform: translate3d(-5%, 4%, 0) scale(1.05);
   }
 }
 
@@ -367,7 +394,7 @@ body {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(8%, -12%, 0) scale(1.18);
+    transform: translate3d(4%, -5%, 0) scale(1.06);
   }
 }
 
@@ -377,7 +404,7 @@ body {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(-6%, 10%, 0) scale(1.2);
+    transform: translate3d(-3%, 4%, 0) scale(1.05);
   }
 }
 
@@ -434,6 +461,76 @@ body {
   }
 }
 
+/* Entrance / scroll reveals (CSS + Intersection Observer) */
+.ssw-reveal {
+  opacity: 0;
+  transform: translate3d(0, 1.25rem, 0);
+  transition:
+    opacity 700ms var(--ssw-ease),
+    transform 700ms var(--ssw-ease);
+  will-change: opacity, transform;
+}
+
+.ssw-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.ssw-reveal-delay-1 {
+  transition-delay: 80ms;
+}
+.ssw-reveal-delay-2 {
+  transition-delay: 160ms;
+}
+.ssw-reveal-delay-3 {
+  transition-delay: 240ms;
+}
+
+.motion-float {
+  animation: motion-float 6s var(--ssw-ease) infinite;
+}
+
+.motion-float-slow {
+  animation: motion-float 9s var(--ssw-ease) infinite reverse;
+}
+
+@keyframes motion-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+.motion-draw {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  animation: motion-draw 1.6s var(--ssw-ease) 0.3s forwards;
+}
+
+@keyframes motion-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 1.25rem;
+}
+
+.hero-visual img,
+.hero-visual svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -442,8 +539,17 @@ body {
   .ambient-blob,
   .success-check circle,
   .success-check path,
-  .modal-enter {
+  .modal-enter,
+  .motion-float,
+  .motion-float-slow,
+  .motion-draw {
     animation: none !important;
+  }
+
+  .ssw-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .ssw-card,

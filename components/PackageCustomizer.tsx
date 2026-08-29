@@ -48,7 +48,7 @@ export default function PackageCustomizer({
                 key={item.id}
                 type="button"
                 onClick={() => onPackageChange(item.id)}
-                className={`rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-1.5 active:scale-[0.97] ${
+                className={`rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
                   active
                     ? "border-purple-400/40 bg-indigo-500/15 shadow-[0_0_28px_rgba(139,92,246,0.22)]"
                     : "border-white/10 bg-white/5 hover:border-white/20"
@@ -75,7 +75,7 @@ export default function PackageCustomizer({
                 key={item.id}
                 type="button"
                 onClick={() => onBusinessChange(item.id)}
-                className={`rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-1.5 active:scale-[0.97] ${
+                className={`rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
                   active
                     ? "border-cyan-400/35 bg-cyan-400/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]"
                     : "border-white/10 bg-white/5 hover:border-white/20"

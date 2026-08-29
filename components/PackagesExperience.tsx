@@ -4,7 +4,7 @@ import { useState } from "react";
 import PackageCard from "./PackageCard";
 import PackageCustomizer from "./PackageCustomizer";
 import ContactForm from "./ContactForm";
-import { BUSINESS_TYPES, PACKAGES, type BusinessTypeId, type PackageId } from "../lib/site";
+import { BUSINESS_TYPES, ENQUIRY_EMAIL, PACKAGES, type BusinessTypeId, type PackageId } from "../lib/site";
 import { scrollToSection } from "../lib/scroll";
 
 export default function PackagesExperience({
@@ -25,7 +25,7 @@ export default function PackagesExperience({
         <p className="ssw-lead mt-4">
           Choose the right package for your business — straightforward, affordable, and tailored.
         </p>
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="ssw-grid mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {PACKAGES.map((item) => (
             <PackageCard
               key={item.id}
@@ -66,6 +66,7 @@ export default function PackagesExperience({
             businessType={businessLabel}
             extras={extras}
             onPackageChange={setSelectedPackage}
+            enquiryEmail={ENQUIRY_EMAIL}
           />
         </div>
       </div>
