@@ -1,6 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <rect x="4" y="4" width="56" height="56" rx="16" fill="#09090b"/>
+  <defs>
+    <linearGradient id="ssw-mark" x1="4" y1="4" x2="60" y2="60">
+      <stop stop-color="#6366f1"/>
+      <stop offset="0.55" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#ssw-mark)"/>
   <path d="M24 24.5c0-3.6 3.2-6.5 8.2-6.5 4.4 0 7.4 2.1 8.3 5.2" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
   <path d="M40 39.5c0 3.6-3.2 6.5-8.2 6.5-4.4 0-7.4-2.1-8.3-5.2" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M22 32h20" stroke="#9FA8DA" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M22 32h20" stroke="#c7d2fe" stroke-width="3.2" stroke-linecap="round"/>
 </svg>
