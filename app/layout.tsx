@@ -4,7 +4,7 @@ import { Poppins, Inter } from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["600", "700", "800"],
   variable: "--font-poppins",
   display: "swap",
 });
@@ -35,7 +35,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "name": "SimpleSiteWorks",
     "url": "https://example.com",
     "description": "Simple websites for small local businesses",
-    "telephone": "",
   };
 
   return (
@@ -45,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#0F172A" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structured) }} />
       </head>
-      <body className="min-h-full flex flex-col bg-white text-primary">{children}</body>
+      <body className="min-h-full flex flex-col bg-white text-primary antialiased">{children}</body>
     </html>
   );
 }
