@@ -1,31 +1,25 @@
 module.exports = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './src/**/*.{js,ts,jsx,tsx}',
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        primary: '#0F172A',
-        card: '#F8FAFC',
-        'accent-start': '#6366F1',
-        'accent-end': '#F97316',
+        primary: "#09090b",
+        muted: "#71717a",
+        card: "#fafafa",
+        accent: "#3F51B5",
       },
       fontFamily: {
-        poppins: ['Poppins', 'ui-sans-serif', 'system-ui'],
-        inter: ['Inter', 'ui-sans-serif', 'system-ui'],
-      },
-      borderRadius: {
-        'xl-lg': '14px',
-      },
-      transitionTimingFunction: {
-        'in-expo': 'cubic-bezier(0.16, 1, 0.3, 1)'
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        'ssw-lg': '0 10px 30px rgba(15,23,42,0.08)'
-      }
+        ssw: "0 8px 30px rgb(0,0,0,0.04)",
+        "ssw-lg": "0 12px 40px rgb(0,0,0,0.06)",
+      },
     },
   },
   plugins: [],

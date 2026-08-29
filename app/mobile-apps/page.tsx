@@ -4,17 +4,24 @@ import MobileAppCard from "../../components/MobileAppCard";
 
 export default function MobileApps() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold">Mobile App Development</h1>
-        <p className="mt-2 text-zinc-600">We build booking, customer, delivery and loyalty apps using React Native / Expo.</p>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <MobileAppCard title="Booking Apps" desc="Appointment and schedule flows" />
-          <MobileAppCard title="Customer Apps" desc="Profiles and messaging" />
-          <MobileAppCard title="Delivery Apps" desc="Orders and tracking" />
-          <MobileAppCard title="Loyalty Apps" desc="Points and rewards" />
-        </div>
+      <main className="flex-1">
+        <section className="ssw-section">
+          <div className="ssw-container">
+            <span className="ssw-kicker">React Native / Expo</span>
+            <h1 className="ssw-h1 mt-5 max-w-3xl">Mobile app development</h1>
+            <p className="ssw-lead mt-4">
+              We build booking, customer, delivery and loyalty apps using React Native / Expo.
+            </p>
+            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+              <MobileAppCard title="Booking Apps" desc="Appointment and schedule flows" />
+              <MobileAppCard title="Customer Apps" desc="Profiles and messaging" />
+              <MobileAppCard title="Delivery Apps" desc="Orders and tracking" />
+              <MobileAppCard title="Loyalty Apps" desc="Points and rewards" />
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

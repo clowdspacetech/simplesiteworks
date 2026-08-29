@@ -1,22 +1,36 @@
-import Image from 'next/image';
+import Image from "next/image";
+import Link from "next/link";
 
-export default function DemoCard({ title, desc, href, src }: { title: string; desc: string; href: string; src?: string }) {
+export default function DemoCard({
+  title,
+  desc,
+  href,
+  src,
+}: {
+  title: string;
+  desc: string;
+  href: string;
+  src?: string;
+}) {
   return (
-    <div className="card overflow-hidden rounded-xl bg-white">
-      <div className="relative w-full h-44 bg-zinc-100 flex items-center justify-center">
+    <Link
+      href={href}
+      className="ssw-card ssw-card-hover group block overflow-hidden p-0"
+    >
+      <div className="relative h-48 w-full overflow-hidden bg-zinc-100">
         {src ? (
-          <Image src={src} alt={title} width={520} height={240} className="object-cover w-full h-full" />
+          <Image src={src} alt={title} width={520} height={240} className="h-full w-full object-cover" />
         ) : (
-          <div className="text-zinc-400">Thumbnail</div>
+          <div className="flex h-full items-center justify-center text-sm text-zinc-400">Thumbnail</div>
         )}
-        <a href={href} className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-end justify-end p-4">
-          <span className="outline-btn">View Demo</span>
-        </a>
+        <div className="absolute inset-0 flex items-end justify-end bg-gradient-to-t from-zinc-950/30 to-transparent p-4 opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100">
+          <span className="btn-secondary h-9 bg-white/95 px-3.5 text-xs">View demo</span>
+        </div>
       </div>
-      <div className="p-5">
-        <h4 className="font-semibold text-lg">{title}</h4>
-        <p className="text-sm text-zinc-600 mt-2">{desc}</p>
+      <div className="p-6">
+        <h4 className="text-lg font-semibold tracking-tight text-zinc-950">{title}</h4>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-500">{desc}</p>
       </div>
-    </div>
+    </Link>
   );
 }

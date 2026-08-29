@@ -8,15 +8,20 @@ export default function Logo({ size = 32 }: { size?: number }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
     >
-      <rect x="6" y="6" width="44" height="44" rx="14" fill="#fff" stroke="url(#g)" strokeWidth="2" style={{ filter: 'drop-shadow(0 4px 10px rgba(15,23,42,0.06))' }} />
-      <path d="M36 20L26 34" stroke="#0F172A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" transform="rotate(12 30 27)" />
-      <path d="M34 18L42 26" stroke="#0F172A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" transform="rotate(16 38 22)" />
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%" stopColor="#6366F1" />
-          <stop offset="100%" stopColor="#F97316" />
-        </linearGradient>
-      </defs>
+      <rect x="4" y="4" width="56" height="56" rx="16" fill="#09090b" />
+      <path
+        d="M24 24.5c0-3.6 3.2-6.5 8.2-6.5 4.4 0 7.4 2.1 8.3 5.2"
+        stroke="white"
+        strokeWidth="3.2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M40 39.5c0 3.6-3.2 6.5-8.2 6.5-4.4 0-7.4-2.1-8.3-5.2"
+        stroke="white"
+        strokeWidth="3.2"
+        strokeLinecap="round"
+      />
+      <path d="M22 32h20" stroke="#9FA8DA" strokeWidth="3.2" strokeLinecap="round" />
     </svg>
   );
 }

@@ -1,24 +1,36 @@
 "use client";
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function FAQAccordion({ items }: { items: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div className="space-y-3">
-      {items.map((it, idx) => (
-        <div key={it.q} className="card p-4 rounded-lg">
-          <button aria-expanded={open === idx} onClick={() => setOpen(open === idx ? null : idx)} className="w-full text-left flex items-center justify-between">
-            <div>
-              <div className={`font-medium ${open === idx ? 'text-[var(--ssw-accent-start)]' : ''}`}>{it.q}</div>
-              <div className="text-sm text-zinc-500 mt-1">{open === idx ? 'Click to collapse' : 'Click to expand'}</div>
+      {items.map((it, idx) => {
+        const isOpen = open === idx;
+        return (
+          <div key={it.q} className="rounded-2xl border border-zinc-200/60 bg-white px-5 py-2 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <button
+              aria-expanded={isOpen}
+              onClick={() => setOpen(isOpen ? null : idx)}
+              className="flex min-h-12 w-full items-center justify-between gap-4 py-3 text-left transition-all duration-200 ease-out"
+            >
+              <div className={`text-[15px] font-medium tracking-tight ${isOpen ? "text-zinc-950" : "text-zinc-800"}`}>
+                {it.q}
+              </div>
+              <span
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200/80 text-zinc-500 transition-all duration-200 ease-out ${
+                  isOpen ? "rotate-45 bg-zinc-50" : ""
+                }`}
+              >
+                +
+              </span>
+            </button>
+            <div className={`faq-content text-sm leading-relaxed text-zinc-500 ${isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"}`}>
+              <div className="pb-4 pr-10">{it.a}</div>
             </div>
-            <div className="text-zinc-500 text-xl">{open === idx ? '−' : '+'}</div>
-          </button>
-          <div className={`faq-content mt-3 text-sm text-zinc-700 ${open === idx ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
-            <div className="py-1">{it.a}</div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

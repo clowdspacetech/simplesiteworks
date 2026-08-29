@@ -1,22 +1,17 @@
 "use client";
-import React from 'react';
+import React from "react";
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'solid' | 'outline';
+  variant?: "solid" | "outline" | "ghost";
   children: React.ReactNode;
 };
 
-export default function Button({ variant = 'solid', className = '', children, ...rest }: Props) {
-  if (variant === 'outline') {
-    return (
-      <button {...rest} className={`outline-btn inline-flex items-center justify-center gap-2 ${className}`}>
-        {children}
-      </button>
-    );
-  }
+export default function Button({ variant = "solid", className = "", children, ...rest }: Props) {
+  const styles =
+    variant === "outline" ? "btn-secondary" : variant === "ghost" ? "btn-ghost" : "btn-primary";
 
   return (
-    <button {...rest} className={`gradient-btn inline-flex items-center justify-center gap-2 ${className}`}>
+    <button {...rest} className={`${styles} ${className}`}>
       {children}
     </button>
   );
