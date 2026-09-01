@@ -22,21 +22,26 @@ Open http://localhost:3000 in your browser.
 Environment variables (`.env.local`)
 -------------------------------
 
-Create a file named `.env.local` with the following values to enable the contact email feature:
+Create a file named `.env.local` (copy from `.env.example`) to enable contact email delivery:
 
 ```env
-# SMTP (for Nodemailer)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_SECURE=false # true for 465
-SMTP_USER=your-smtp-user
-SMTP_PASS=your-smtp-pass
-SMTP_FROM="SimpleSiteWorks <no-reply@example.com>"
-CONTACT_EMAIL=you@yourdomain.com
+NEXT_PUBLIC_ENQUIRY_EMAIL=clowdspace98@gmail.com
+CONTACT_EMAIL=clowdspace98@gmail.com
 
-# Optional: change dev port
-# PORT=3001
+# Gmail: use an App Password (not your normal password)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=clowdspace98@gmail.com
+SMTP_PASS=Clowdspace@123
+SMTP_FROM="SimpleSiteWorks <clowdspace98@gmail.com>"
+
+# Optional alternative to SMTP:
+# RESEND_API_KEY=re_xxxxxxxx
+# RESEND_FROM="SimpleSiteWorks <onboarding@resend.dev>"
 ```
+
+**Important:** Without `SMTP_*` (or `RESEND_API_KEY`), the API accepts the enquiry but does **not** send email. The form will show a clear “not delivered” state and a mailto fallback.
 
 Testing the contact API
 -----------------------
@@ -49,7 +54,7 @@ curl -X POST http://localhost:3000/api/contact \
 	-d '{"name":"Test","email":"test@example.com","phone":"123","business":"Demo","package":"Basic"}'
 ```
 
-If SMTP is configured correctly the route should return JSON `{ "ok": true }` and an email will be sent to `CONTACT_EMAIL`.
+If SMTP (or Resend) is configured correctly the route should return JSON `{ "ok": true, "delivered": true }`. If mailer env vars are missing it returns `{ "ok": true, "delivered": false }` and the UI prompts a mailto fallback.
 
 Common dev issues & fixes
 -------------------------

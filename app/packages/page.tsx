@@ -1,5 +1,5 @@
 import PackagesExperience from "../../components/PackagesExperience";
-import { isPackageId, type PackageId } from "../../lib/site";
+import { resolvePackageId } from "../../lib/site";
 
 export default async function PackagesPage({
   searchParams,
@@ -8,10 +8,10 @@ export default async function PackagesPage({
 }) {
   const params = await searchParams;
   const raw = typeof params.package === "string" ? params.package : undefined;
-  const initialPackage: PackageId | undefined = isPackageId(raw) ? raw : undefined;
+  const initialPackage = raw ? resolvePackageId(raw) : undefined;
 
   return (
-    <main className="flex-1">
+    <main className="min-w-0 flex-1 overflow-x-clip">
       <PackagesExperience initialPackage={initialPackage} />
     </main>
   );

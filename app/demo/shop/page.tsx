@@ -18,7 +18,7 @@ export default function ShopDemo() {
               <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-400 md:text-base">
                 Menu, hours, and a map so regulars and visitors know exactly where you are.
               </p>
-              <Link href="/contact?package=Custom&business=Shop%20%2F%20caf%C3%A9" className="btn-primary mt-6">
+              <Link href="/contact?package=Growth&business=Shop%20%2F%20caf%C3%A9" className="btn-primary mt-6">
                 Request this style
               </Link>
             </div>

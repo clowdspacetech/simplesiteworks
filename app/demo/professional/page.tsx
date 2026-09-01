@@ -20,7 +20,7 @@ export default function ProfessionalDemo() {
               <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-400 md:text-base">
                 Services laid out clearly, a few client notes, and a form that doesn’t feel like paperwork.
               </p>
-              <Link href="/contact?package=Custom&business=Professional" className="btn-primary mt-6">
+              <Link href="/contact?package=Growth&business=Professional" className="btn-primary mt-6">
                 Request this style
               </Link>
             </div>

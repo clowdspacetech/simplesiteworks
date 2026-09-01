@@ -20,7 +20,7 @@ export default function TradesmanDemo() {
               <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-400 md:text-base">
                 Call-outs, quoted jobs, and a photo gallery of recent work. Customers can reach you in one tap.
               </p>
-              <Link href="/contact?package=Custom&business=Trades" className="btn-primary mt-6">
+              <Link href="/contact?package=Growth&business=Trades" className="btn-primary mt-6">
                 Request this style
               </Link>
             </div>

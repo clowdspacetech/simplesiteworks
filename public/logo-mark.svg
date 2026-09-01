@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none" role="img" aria-label="SimpleSiteWorks">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none" role="img" aria-label="SimpleSiteWorks mark">
   <defs>
     <linearGradient id="ssw-brand-gradient" x1="512" y1="64" x2="512" y2="960" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#00D2FF"/>
@@ -7,6 +7,7 @@
       <stop offset="100%" stop-color="#8E2DE2"/>
     </linearGradient>
   </defs>
+  <!-- Upper ribbon stroke of the S mark -->
   <path
     d="M 712 168 C 548 108 348 148 268 292 C 228 364 248 432 348 468 C 412 492 492 472 548 428"
     stroke="url(#ssw-brand-gradient)"
@@ -15,6 +16,7 @@
     stroke-linejoin="round"
     fill="none"
   />
+  <!-- Lower ribbon stroke of the S mark -->
   <path
     d="M 312 856 C 476 916 676 876 756 732 C 796 660 776 592 676 556 C 612 532 532 552 476 596"
     stroke="url(#ssw-brand-gradient)"

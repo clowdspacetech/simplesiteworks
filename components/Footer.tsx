@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Logo from "./Logo";
+import Logo, { BrandWordmark } from "./Logo";
 
 export default function Footer() {
   return (
@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="ssw-container grid gap-10 py-12 md:grid-cols-3 md:py-16">
         <div>
           <Link href="/" className="inline-flex items-center gap-3">
-            <Logo size={28} />
-            <span className="text-[15px] font-extrabold tracking-tight text-white">SimpleSiteWorks</span>
+            <Logo width={18} />
+            <BrandWordmark showTagline />
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-400">
             Simple websites for small local businesses. Clear pricing. Fast delivery.
@@ -23,9 +23,6 @@ export default function Footer() {
             </Link>
             <Link href="/demo/tradesman" className="text-zinc-400 transition-colors duration-500 hover:text-white">
               Demos
-            </Link>
-            <Link href="/mobile-apps" className="text-zinc-400 transition-colors duration-500 hover:text-white">
-              Apps
             </Link>
             <Link href="/about" className="text-zinc-400 transition-colors duration-500 hover:text-white">
               About
