@@ -1,5 +1,7 @@
 "use client";
 
+import { Check } from "lucide-react";
+
 export default function PricingCard({
   title,
   price,
@@ -24,8 +26,10 @@ export default function PricingCard({
       <p className="mt-2 text-xs text-zinc-500">{mrrLabel}</p>
       <ul className="mt-6 space-y-2 text-left text-sm leading-relaxed text-zinc-400">
         {bullets.slice(0, 3).map((bullet) => (
-          <li key={bullet} className="flex items-start gap-2">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" />
+          <li key={bullet} className="flex items-start gap-2.5">
+            <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-indigo-400/30 bg-indigo-500/15">
+              <Check className="h-3 w-3 text-cyan-300" strokeWidth={3} />
+            </span>
             <span>{bullet}</span>
           </li>
         ))}

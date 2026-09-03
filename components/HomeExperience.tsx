@@ -1,9 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import PackageCard from "./PackageCard";
-import DemoShowcaseCard from "./DemoShowcaseCard";
-import PricingCard from "./PricingCard";
+import PricingComparisonGrid from "./PricingComparisonGrid";
+import ShowcaseCarousel from "./ShowcaseCarousel";
 import FAQAccordion from "./FAQAccordion";
 import ContactForm from "./ContactForm";
 import DemoModal from "./DemoModal";
@@ -11,7 +10,6 @@ import PackageCustomizer from "./PackageCustomizer";
 import HeroVisual from "./HeroVisual";
 import Reveal from "./Reveal";
 import TrustStats from "./TrustStats";
-import CurrencySelector from "./CurrencySelector";
 import { useCurrency } from "./CurrencyProvider";
 import {
   BUSINESS_TYPES,
@@ -24,14 +22,13 @@ import {
 } from "../lib/site";
 import { scrollToSection } from "../lib/scroll";
 
-const DEMO_IDS: DemoId[] = ["tradesman", "shop", "professional"];
-
 export default function HomeExperience() {
-  const { packages, fromPriceLabel } = useCurrency();
+  const { fromPriceLabel } = useCurrency();
   const [selectedPackage, setSelectedPackage] = useState<PackageId>("Growth");
   const [businessType, setBusinessType] = useState<BusinessTypeId | "">("");
   const [extras, setExtras] = useState<string[]>([]);
   const [demoId, setDemoId] = useState<DemoId | null>(null);
+  const [prefill, setPrefill] = useState({ name: "", email: "", phone: "" });
 
   const choosePackage = useCallback((id: string, target: "packages" | "pricing" | "contact" = "contact") => {
     if (id === "Starter" || id === "Growth" || id === "Automation") {
@@ -66,7 +63,7 @@ export default function HomeExperience() {
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 text-sm text-zinc-400">
               <span>From {fromPriceLabel}</span>
               <span>Global pricing · 6 currencies</span>
-              <span>Launch in 2–3 weeks</span>
+              <span>Launch in 1–2 weeks</span>
             </div>
           </Reveal>
 
@@ -98,76 +95,20 @@ export default function HomeExperience() {
 
       <section id="packages" className="ssw-section">
         <div className="ssw-container">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <Reveal className="max-w-2xl">
-              <h2 className="ssw-h2">Investment tiers</h2>
-              <p className="mt-3 text-base leading-relaxed text-zinc-400">
-                Premium packages priced for purchasing power in your market — plus transparent monthly maintenance.
-              </p>
-            </Reveal>
-            <CurrencySelector className="shrink-0" />
-          </div>
-          <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {packages.map((item) => (
-              <PackageCard
-                key={item.id}
-                packageId={item.id}
-                title={item.title}
-                price={item.price}
-                priceLabel={item.priceLabel}
-                mrrLabel={item.mrrLabel}
-                bullets={item.bullets}
-                featured={item.featured}
-                selected={selectedPackage === item.id}
-                onChoose={(id) => choosePackage(id, "contact")}
-              />
-            ))}
-          </div>
+          <PricingComparisonGrid
+            selectedPackage={selectedPackage}
+            onChoose={(id) => choosePackage(id, "contact")}
+          />
         </div>
       </section>
 
       <section className="ssw-section pt-0">
         <div className="ssw-container">
-          <Reveal className="max-w-2xl">
-            <h2 className="ssw-h2">Industry demo showcases</h2>
-            <p className="mt-3 text-base leading-relaxed text-zinc-400">
-              Purpose-built experiences for high-intent local verticals — each engineered for conversion, not decoration.
-            </p>
-          </Reveal>
-          <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {DEMO_IDS.map((id) => (
-              <DemoShowcaseCard key={id} demoId={id} onView={() => setDemoId(id)} />
-            ))}
-          </div>
+          <ShowcaseCarousel onSelectDemo={setDemoId} />
         </div>
       </section>
 
       <section id="pricing" className="ssw-section pt-0">
-        <div className="ssw-container">
-          <Reveal className="max-w-2xl">
-            <h2 className="ssw-h2">Pricing at a glance</h2>
-            <p className="mt-3 text-base leading-relaxed text-zinc-400">
-              One-time build investment plus a clear monthly maintenance line — written in plain language.
-            </p>
-          </Reveal>
-          <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {packages.map((item) => (
-              <PricingCard
-                key={item.id}
-                packageId={item.id}
-                title={item.title}
-                price={item.price}
-                mrrLabel={item.mrrLabel}
-                bullets={item.bullets}
-                selected={selectedPackage === item.id}
-                onChoose={(id) => choosePackage(id, "contact")}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="ssw-section pt-0">
         <div className="ssw-container">
           <PackageCustomizer
             selectedPackage={selectedPackage}
@@ -176,6 +117,7 @@ export default function HomeExperience() {
             onPackageChange={setSelectedPackage}
             onBusinessChange={setBusinessType}
             onExtrasChange={setExtras}
+            onContactPrefill={setPrefill}
             onContinue={() => scrollToSection("contact")}
           />
         </div>
@@ -202,6 +144,9 @@ export default function HomeExperience() {
               extras={extras}
               onPackageChange={setSelectedPackage}
               enquiryEmail={ENQUIRY_EMAIL}
+              initialName={prefill.name}
+              initialEmail={prefill.email}
+              initialPhone={prefill.phone}
             />
           </div>
         </div>

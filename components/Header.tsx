@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Logo, { BrandWordmark } from "./Logo";
+import CurrencySelector from "./CurrencySelector";
 
 const nav = [
   { href: "/", label: "Home" },
@@ -52,12 +53,14 @@ export default function Header() {
               </Link>
             );
           })}
-          <Link href="/contact" className="btn-primary ml-3">
+          <CurrencySelector compact className="ml-2" />
+          <Link href="/contact" className="btn-primary ml-2">
             Contact
           </Link>
         </nav>
 
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <CurrencySelector compact />
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}

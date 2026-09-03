@@ -48,6 +48,9 @@ export default function ContactForm({
   onPackageChange,
   enquiryEmail = ENQUIRY_EMAIL,
   enquiryWhatsAppNumbers = ENQUIRY_WHATSAPP_NUMBERS,
+  initialName = "",
+  initialEmail = "",
+  initialPhone = "",
 }: {
   selectedPackage?: string;
   businessType?: string;
@@ -57,15 +60,18 @@ export default function ContactForm({
   enquiryEmail?: string;
   /** WhatsApp numbers (E.164) to alert on new enquiries. */
   enquiryWhatsAppNumbers?: string[];
+  initialName?: string;
+  initialEmail?: string;
+  initialPhone?: string;
 }) {
   const destinationEmail = enquiryEmail.trim() || ENQUIRY_EMAIL;
   const destinationWhatsApp = enquiryWhatsAppNumbers.length ? enquiryWhatsAppNumbers : ENQUIRY_WHATSAPP_NUMBERS;
   const { packages } = useCurrency();
   const initialPackage = resolvePackageId(selectedPackage);
   const [pkg, setPkg] = useState<PackageId>(initialPackage);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState(initialName);
+  const [email, setEmail] = useState(initialEmail);
+  const [phone, setPhone] = useState(initialPhone);
   const [business, setBusiness] = useState(businessType ?? "");
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -82,6 +88,18 @@ export default function ContactForm({
   useEffect(() => {
     if (businessType) setBusiness(businessType);
   }, [businessType]);
+
+  useEffect(() => {
+    if (initialName) setName(initialName);
+  }, [initialName]);
+
+  useEffect(() => {
+    if (initialEmail) setEmail(initialEmail);
+  }, [initialEmail]);
+
+  useEffect(() => {
+    if (initialPhone) setPhone(initialPhone);
+  }, [initialPhone]);
 
   const extrasNote = useMemo(() => (extras.length ? extras.join(", ") : ""), [extras]);
 

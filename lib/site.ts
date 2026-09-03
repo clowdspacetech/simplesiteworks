@@ -2,12 +2,14 @@ export const PACKAGES = [
   {
     id: "Starter" as const,
     title: "Starter Footprint",
+    subtitle: "One-Page Presence",
     legacyId: "Basic",
     bullets: [
-      "Capture more local enquiries with a conversion-optimized one-page presence",
-      "Mobile-first layout built for on-the-go search traffic",
-      "Done-for-you contact flows that turn visitors into booked calls",
-      "Launch-ready hosting, SSL, and performance tuning included",
+      "Single high-converting landing page",
+      "Streamlined contact & enquiry flows",
+      "Mobile-first design for local search traffic",
+      "Built and launched in 1–2 weeks",
+      "Hosting, SSL & performance tuning included",
     ],
     featured: false,
     summary:
@@ -16,12 +18,14 @@ export const PACKAGES = [
   {
     id: "Growth" as const,
     title: "Business Growth Suite",
+    subtitle: "Multi-Page Authority",
     legacyId: "Custom",
     bullets: [
-      "Multi-page brand experience engineered to build trust and repeat business",
-      "Service showcases and social proof that shorten the sales cycle",
-      "Strategic content architecture that ranks for high-intent local searches",
-      "Hands-free copy and premium imagery curation available",
+      "Multi-page brand layout that builds trust",
+      "Dedicated localized SEO framework",
+      "Automated keyword targeting for high-intent searches",
+      "Service showcases & social proof sections",
+      "Hands-free copy and premium imagery available",
     ],
     featured: true,
     summary:
@@ -30,12 +34,14 @@ export const PACKAGES = [
   {
     id: "Automation" as const,
     title: "The Automation Engine",
+    subtitle: "Full Operational Suite",
     legacyId: "Advanced",
     bullets: [
-      "Save 5+ hours a week with automated client scheduling and secure upfront deposit collection",
-      "Self-service client portals that reduce admin back-and-forth",
-      "Integrated payment rails that get you paid before work begins",
-      "Custom workflows tailored to how your business actually operates",
+      "Self-service client portals that cut admin work",
+      "Integrated calendar scheduling",
+      "Upfront deposit collection before work starts",
+      "Advanced automation tailored to your workflow",
+      "Save 5+ hours a week on back-office tasks",
     ],
     featured: false,
     summary:
@@ -81,13 +87,66 @@ export const DONE_FOR_YOU = {
 };
 
 export const BUSINESS_TYPES = [
-  { id: "trades", label: "Trades", hint: "Plumber, electrician, gardener" },
-  { id: "shop", label: "Shop / café", hint: "Menu, hours, walk-ins" },
-  { id: "professional", label: "Professional", hint: "Accountant, tutor, consultant" },
-  { id: "other", label: "Something else", hint: "Tell us in the form" },
-] as const;
+  {
+    id: "trades" as const,
+    label: "Trades",
+    hint: "Plumber, electrician, landscaper",
+    demoId: "tradesman" as const,
+    archetype: "The Local Trade Authority",
+  },
+  {
+    id: "shop" as const,
+    label: "Hospitality",
+    hint: "Café, bakery, restaurant",
+    demoId: "shop" as const,
+    archetype: "The Boutique Hospitality Engine",
+  },
+  {
+    id: "professional" as const,
+    label: "Professional",
+    hint: "Accountant, tutor, consultant",
+    demoId: "professional" as const,
+    archetype: "The Expert Advisory Portal",
+  },
+  {
+    id: "wellness" as const,
+    label: "Wellness",
+    hint: "Gym, yoga, personal trainer",
+    demoId: "wellness" as const,
+    archetype: "The Wellness & Lifestyle Hub",
+  },
+];
 
 export type BusinessTypeId = (typeof BUSINESS_TYPES)[number]["id"];
+
+export const STRATEGY_GOALS = [
+  {
+    id: "calls" as const,
+    label: "Get more phone calls",
+    hint: "Capture high-intent local enquiries",
+    suggests: "Starter" as PackageId,
+  },
+  {
+    id: "seo" as const,
+    label: "Rank on Google",
+    hint: "Local SEO & multi-page authority",
+    suggests: "Growth" as PackageId,
+  },
+  {
+    id: "scheduling" as const,
+    label: "Automate scheduling",
+    hint: "Bookings, deposits & client portals",
+    suggests: "Automation" as PackageId,
+  },
+  {
+    id: "brand" as const,
+    label: "Build brand trust",
+    hint: "Authority layout & social proof",
+    suggests: "Growth" as PackageId,
+  },
+] as const;
+
+export type StrategyGoalId = (typeof STRATEGY_GOALS)[number]["id"];
 
 export const EXTRAS = [
   { id: "seo", label: "Local SEO boost" },
@@ -103,7 +162,7 @@ export const DEMOS = [
     desc: "Engineered to convert high-intent emergency search traffic instantly. Features prominent tap-to-call integrations, geographic service grids, and a streamlined upfront quote calculator.",
     aesthetic: "High-contrast action accents, strong editorial typography, and live Google Review carousel feeds.",
     href: "/demo/tradesman",
-    src: "/demos/tradesman.svg",
+    src: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80",
     kicker: "Reliable · Local · Insured",
     headline: "Plumbing, electrics and garden work — done properly.",
     summary:
@@ -117,7 +176,7 @@ export const DEMOS = [
     desc: "A fluid, mobile-first experience designed for local patrons on the move. Features smooth digital menu rendering, active Google Maps sync, and an effortless table reservation interface.",
     aesthetic: "Elegant modern spacing, striking full-screen imagery transitions, and premium micro-interactions.",
     href: "/demo/shop",
-    src: "/demos/shop.svg",
+    src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
     kicker: "Open today · 8:00–16:00",
     headline: "Coffee, pastry, and a table by the window.",
     summary:
@@ -131,25 +190,72 @@ export const DEMOS = [
     desc: "Designed to assert immediate market authority and capture premium consulting leads. Features structured service matrix grids and an automated introductory discovery call calendar scheduling flow.",
     aesthetic: "Clean editorial layout structures, calming authoritative color palettes, and perfectly balanced text grids.",
     href: "/demo/professional",
-    src: "/demos/professional.svg",
+    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
     kicker: "Advice you can act on",
     headline: "Calm, credible, easy to enquire.",
     summary:
       "Authority-first layouts with service matrices and discovery-call booking that qualify premium leads.",
     features: ["Service matrix grids", "Client testimonials", "Discovery call scheduling"],
   },
+  {
+    id: "wellness",
+    title: "The Wellness & Lifestyle Hub",
+    industry: "Built for Gyms, Yoga Studios, and Personal Trainers",
+    desc: "A scheduling-first experience designed for high-energy fitness brands. Features dynamic class timetables, membership CTAs, and mobile booking flows that fill empty slots.",
+    aesthetic: "Dynamic action-oriented layout, high-energy highlights, and scheduling-first interfaces.",
+    href: "/demo/wellness",
+    src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1200&q=80",
+    kicker: "Train · Recover · Repeat",
+    headline: "Classes, coaching, and a timetable that fills itself.",
+    summary:
+      "Dynamic class schedules and membership flows that keep members booking — and trainers free of admin.",
+    features: ["Class timetable switcher", "Membership CTAs", "Mobile booking flows"],
+  },
 ];
 
 export type DemoId = (typeof DEMOS)[number]["id"];
 
+export function suggestPackageFromGoals(goals: StrategyGoalId[]): PackageId {
+  if (!goals.length) return "Growth";
+  const scores: Record<PackageId, number> = { Starter: 0, Growth: 0, Automation: 0 };
+  for (const goalId of goals) {
+    const goal = STRATEGY_GOALS.find((item) => item.id === goalId);
+    if (goal) scores[goal.suggests] += 1;
+  }
+  if (scores.Automation >= scores.Growth && scores.Automation >= scores.Starter) return "Automation";
+  if (scores.Growth >= scores.Starter) return "Growth";
+  return "Starter";
+}
+
 export const FAQ_ITEMS = [
-  { q: "How quickly can we launch?", a: "Most Starter Footprint projects go live in 2–3 weeks. Growth and Automation tiers vary by scope — we provide a clear timeline upfront." },
-  { q: "Do I need to write copy or supply photos?", a: "No. Our Hands-Free Copy & Media service handles professional copywriting and premium imagery curation so you can launch stress-free." },
-  { q: "What's included in the monthly maintenance fee?", a: "Hosting, SSL, security updates, performance monitoring, and priority support — so your site stays fast, secure, and converting." },
-  { q: "Can you handle bookings and payments?", a: "Yes — The Automation Engine includes scheduling, deposit collection, and client portals tailored to your workflow." },
-  { q: "Do you work with businesses outside the UK?", a: "Absolutely. We serve local businesses globally with localized pricing in GBP, USD, EUR, INR, AUD, and CAD." },
-  { q: "Will my site work on mobile?", a: "Every build is 100% mobile-first — engineered for the 70%+ of local searches happening on phones." },
-  { q: "Can I upgrade later?", a: "Yes. Start with Starter Footprint and scale into Growth or Automation as your business grows — we migrate your existing content." },
+  {
+    q: "How quickly can we launch?",
+    a: "Most Starter Footprint projects go live in 1–2 weeks. Growth and Automation tiers vary by scope — we provide a clear timeline upfront.",
+  },
+  {
+    q: "Do I need to write copy or supply photos?",
+    a: "No. Our Hands-Free Copy & Media service handles professional copywriting and premium imagery curation so you can launch stress-free.",
+  },
+  {
+    q: "What's included in the monthly maintenance fee?",
+    a: "Hosting, SSL, security updates, performance monitoring, and priority support — so your site stays fast, secure, and converting.",
+  },
+  {
+    q: "Can you handle bookings and payments?",
+    a: "Yes — The Automation Engine includes scheduling, deposit collection, and client portals tailored to your workflow.",
+  },
+  {
+    q: "Do you work with businesses outside the UK?",
+    a: "Absolutely. We serve local businesses globally with localized pricing in GBP, USD, EUR, INR, AUD, and CAD.",
+  },
+  {
+    q: "Will my site work on mobile?",
+    a: "Every build is 100% mobile-first — engineered for the 70%+ of local searches happening on phones.",
+  },
+  {
+    q: "Can I upgrade later?",
+    a: "Yes. Start with Starter Footprint and scale into Growth or Automation as your business grows — we migrate your existing content.",
+  },
 ];
 
 export const APP_OFFERINGS = [
@@ -168,7 +274,14 @@ const WHATSAPP_E164 = /^\+[1-9]\d{7,14}$/;
 /** WhatsApp numbers to alert on new enquiries (E.164, e.g. +447700900123). */
 export function parseWhatsAppNumbers(raw?: string): string[] {
   if (!raw?.trim()) return [];
-  return [...new Set(raw.split(/[,;\s]+/).map((value) => value.trim()).filter((value) => WHATSAPP_E164.test(value)))];
+  return [
+    ...new Set(
+      raw
+        .split(/[,;\s]+/)
+        .map((value) => value.trim())
+        .filter((value) => WHATSAPP_E164.test(value)),
+    ),
+  ];
 }
 
 export const ENQUIRY_WHATSAPP_NUMBERS = parseWhatsAppNumbers(

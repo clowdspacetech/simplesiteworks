@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { CURRENCY_COOKIE, countryToCurrency, isCurrencyCode } from "./lib/currency";
 
+type RequestWithGeo = NextRequest & {
+  geo?: { country?: string | null };
+};
+
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
@@ -11,7 +15,7 @@ export function middleware(request: NextRequest) {
   }
 
   const geoCountry =
-    request.geo?.country ??
+    (request as RequestWithGeo).geo?.country ??
     request.headers.get("x-vercel-ip-country") ??
     request.headers.get("cf-ipcountry") ??
     "";

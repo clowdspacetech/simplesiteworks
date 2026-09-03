@@ -1,5 +1,7 @@
 "use client";
 
+import { Check } from "lucide-react";
+
 export default function PackageCard({
   title,
   price,
@@ -24,9 +26,7 @@ export default function PackageCard({
   onChoose?: (id: string) => void;
 }) {
   return (
-    <div
-      className={`ssw-card ssw-card-hover flex h-full flex-col ${selected ? "ssw-card-selected" : ""}`}
-    >
+    <div className={`ssw-card ssw-card-hover flex h-full flex-col ${selected ? "ssw-card-selected" : ""}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           {featured && (
@@ -49,7 +49,9 @@ export default function PackageCard({
       <ul className="mt-6 flex-1 space-y-3 text-sm leading-relaxed text-zinc-400">
         {bullets.map((b) => (
           <li key={b} className="flex items-start gap-2.5">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-indigo-400 to-cyan-300" />
+            <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-indigo-400/30 bg-indigo-500/15">
+              <Check className="h-3 w-3 text-cyan-300" strokeWidth={3} />
+            </span>
             <span>{b}</span>
           </li>
         ))}
@@ -71,7 +73,7 @@ export default function PackageCard({
             {cta}
           </a>
         )}
-        <div className="text-xs text-zinc-500">2–3 weeks</div>
+        <div className="text-xs text-zinc-500">1–2 weeks</div>
       </div>
     </div>
   );

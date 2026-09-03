@@ -1,7 +1,23 @@
 "use client";
 
-import { BUSINESS_TYPES, EXTRAS, type BusinessTypeId, type PackageId } from "../lib/site";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, Mail, MessageCircle } from "lucide-react";
+import {
+  BUSINESS_TYPES,
+  STRATEGY_GOALS,
+  suggestPackageFromGoals,
+  type BusinessTypeId,
+  type PackageId,
+  type StrategyGoalId,
+} from "../lib/site";
 import { useCurrency } from "./CurrencyProvider";
+import CurrencySelector from "./CurrencySelector";
+
+const STEPS = [
+  { id: 1, label: "Industry" },
+  { id: 2, label: "Goals" },
+  { id: 3, label: "Contact" },
+] as const;
 
 export default function PackageCustomizer({
   selectedPackage,
@@ -11,6 +27,7 @@ export default function PackageCustomizer({
   onBusinessChange,
   onExtrasChange,
   onContinue,
+  onContactPrefill,
 }: {
   selectedPackage: PackageId;
   businessType: BusinessTypeId | "";
@@ -19,113 +36,248 @@ export default function PackageCustomizer({
   onBusinessChange: (business: BusinessTypeId) => void;
   onExtrasChange: (extras: string[]) => void;
   onContinue: () => void;
+  onContactPrefill?: (values: { email: string; phone: string; name: string }) => void;
 }) {
-  const { packages } = useCurrency();
-  const selected = packages.find((item) => item.id === selectedPackage);
+  const { packages, formatTier } = useCurrency();
+  const [step, setStep] = useState(1);
+  const [goals, setGoals] = useState<StrategyGoalId[]>([]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+
+  const suggested = useMemo(() => suggestPackageFromGoals(goals), [goals]);
+  const estimateId = goals.length ? suggested : selectedPackage;
+  const estimate = packages.find((item) => item.id === estimateId) ?? packages[1];
+  const pricing = formatTier(estimate.id);
   const businessLabel = BUSINESS_TYPES.find((item) => item.id === businessType)?.label;
 
-  function toggleExtra(id: string) {
-    onExtrasChange(extras.includes(id) ? extras.filter((item) => item !== id) : [...extras, id]);
+  useEffect(() => {
+    if (goals.length && suggested !== selectedPackage) {
+      onPackageChange(suggested);
+    }
+  }, [goals, suggested, selectedPackage, onPackageChange]);
+
+  useEffect(() => {
+    const mapped = goals
+      .map((goalId) => STRATEGY_GOALS.find((item) => item.id === goalId)?.label)
+      .filter(Boolean) as string[];
+    onExtrasChange(mapped);
+  }, [goals, onExtrasChange]);
+
+  function toggleGoal(id: StrategyGoalId) {
+    setGoals((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
   }
+
+  function goNext() {
+    if (step === 1 && !businessType) return;
+    if (step === 2 && !goals.length) return;
+    if (step < 3) {
+      setStep((current) => current + 1);
+      return;
+    }
+
+    onContactPrefill?.({ name: name.trim(), email: email.trim(), phone: whatsapp.trim() });
+    onContinue();
+  }
+
+  function goBack() {
+    setStep((current) => Math.max(1, current - 1));
+  }
+
+  const canContinue =
+    (step === 1 && Boolean(businessType)) ||
+    (step === 2 && goals.length > 0) ||
+    (step === 3 && name.trim().length >= 2 && email.trim().includes("@"));
 
   return (
     <div className="ssw-card">
-      <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-indigo-300">Strategy brief builder</p>
           <h3 className="mt-2 font-display text-2xl font-extrabold tracking-tight text-white">
             Configure your growth package in three steps
           </h3>
         </div>
-        <p className="text-sm text-zinc-400">Your enquiry form updates as you pick.</p>
+        <CurrencySelector className="shrink-0" />
       </div>
 
       <div className="mt-8">
-        <p className="mb-3 text-sm font-semibold text-zinc-200">1. Choose an investment tier</p>
-        <div className="grid gap-3 md:grid-cols-3">
-          {packages.map((item) => {
-            const active = item.id === selectedPackage;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => onPackageChange(item.id)}
-                className={`min-h-12 rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
-                  active
-                    ? "border-purple-400/40 bg-indigo-500/15 shadow-[0_0_28px_rgba(139,92,246,0.22)]"
-                    : "border-white/10 bg-white/5 hover:border-white/20"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-extrabold tracking-tight text-white">{item.title}</span>
-                  <span className="text-xs text-zinc-400">{item.priceLabel}</span>
+        <div className="relative mb-8">
+          <div className="absolute left-0 right-0 top-5 h-px bg-white/10" />
+          <ol className="relative grid grid-cols-3 gap-2">
+            {STEPS.map((item) => {
+              const active = step === item.id;
+              const done = step > item.id;
+              return (
+                <li key={item.id} className="flex flex-col items-center text-center">
+                  <span
+                    className={`relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold transition-all duration-500 ease-premium ${
+                      active || done
+                        ? "border-indigo-400/50 bg-indigo-500/20 text-white shadow-[0_0_24px_rgba(99,102,241,0.25)]"
+                        : "border-white/10 bg-zinc-950 text-zinc-500"
+                    }`}
+                  >
+                    {done ? <Check className="h-4 w-4 text-cyan-300" /> : item.id}
+                  </span>
+                  <span className={`mt-2 text-xs font-medium ${active ? "text-white" : "text-zinc-500"}`}>
+                    {item.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="min-w-0">
+            {step === 1 && (
+              <div className="space-y-4 transition-all duration-500 ease-premium">
+                <p className="text-sm font-semibold text-zinc-200">1. Choose your industry archetype</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {BUSINESS_TYPES.map((item) => {
+                    const active = item.id === businessType;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => onBusinessChange(item.id)}
+                        className={`min-h-12 rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
+                          active
+                            ? "border-cyan-400/35 bg-cyan-400/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]"
+                            : "border-white/10 bg-white/5 hover:border-white/20"
+                        }`}
+                      >
+                        <span className="block text-sm font-semibold text-white">{item.label}</span>
+                        <span className="mt-1 block text-xs text-zinc-400">{item.hint}</span>
+                        <span className="mt-3 block text-[11px] uppercase tracking-wider text-indigo-300">
+                          {item.archetype}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
-                <p className="mt-1 text-[11px] text-zinc-500">{item.mrrLabel}</p>
-                <p className="mt-2 text-xs leading-relaxed text-zinc-400">{item.summary}</p>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+              </div>
+            )}
 
-      <div className="mt-8">
-        <p className="mb-3 text-sm font-semibold text-zinc-200">2. What do you do?</p>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          {BUSINESS_TYPES.map((item) => {
-            const active = item.id === businessType;
-            return (
+            {step === 2 && (
+              <div className="space-y-4 transition-all duration-500 ease-premium">
+                <p className="text-sm font-semibold text-zinc-200">2. What should this site achieve?</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {STRATEGY_GOALS.map((item) => {
+                    const active = goals.includes(item.id);
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => toggleGoal(item.id)}
+                        className={`min-h-12 rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
+                          active
+                            ? "border-indigo-400/40 bg-indigo-500/15 shadow-[0_0_28px_rgba(139,92,246,0.22)]"
+                            : "border-white/10 bg-white/5 hover:border-white/20"
+                        }`}
+                      >
+                        <span className="block text-sm font-semibold text-white">{item.label}</span>
+                        <span className="mt-1 block text-xs text-zinc-400">{item.hint}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-4 transition-all duration-500 ease-premium">
+                <p className="text-sm font-semibold text-zinc-200">3. Fast contact details</p>
+                <div>
+                  <label className="ssw-label" htmlFor="brief-name">
+                    Name
+                  </label>
+                  <input
+                    id="brief-name"
+                    className="ssw-input"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label className="ssw-label" htmlFor="brief-email">
+                    <span className="inline-flex items-center gap-2">
+                      <Mail className="h-3.5 w-3.5 text-indigo-300" />
+                      Email
+                    </span>
+                  </label>
+                  <input
+                    id="brief-email"
+                    type="email"
+                    className="ssw-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@business.com"
+                  />
+                </div>
+                <div>
+                  <label className="ssw-label" htmlFor="brief-whatsapp">
+                    <span className="inline-flex items-center gap-2">
+                      <MessageCircle className="h-3.5 w-3.5 text-cyan-300" />
+                      WhatsApp number
+                    </span>
+                  </label>
+                  <input
+                    id="brief-whatsapp"
+                    className="ssw-input"
+                    value={whatsapp}
+                    onChange={(e) => setWhatsapp(e.target.value)}
+                    placeholder="+44 7700 900123"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6">
               <button
-                key={item.id}
                 type="button"
-                onClick={() => onBusinessChange(item.id)}
-                className={`min-h-12 rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
-                  active
-                    ? "border-cyan-400/35 bg-cyan-400/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]"
-                    : "border-white/10 bg-white/5 hover:border-white/20"
-                }`}
+                onClick={goBack}
+                disabled={step === 1}
+                className="btn-ghost disabled:opacity-40"
               >
-                <span className="block text-sm font-semibold text-white">{item.label}</span>
-                <span className="mt-1 block text-xs text-zinc-400">{item.hint}</span>
+                <ArrowLeft className="h-4 w-4" />
+                Back
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <p className="mb-3 text-sm font-semibold text-zinc-200">3. Growth accelerators</p>
-        <div className="flex flex-wrap gap-3">
-          {EXTRAS.map((item) => {
-            const active = extras.includes(item.label);
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => toggleExtra(item.label)}
-                className={`min-h-12 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
-                  active
-                    ? "border-indigo-400/40 bg-indigo-500/20 text-white"
-                    : "border-white/10 bg-white/5 text-zinc-300 hover:border-white/20"
-                }`}
-              >
-                {active ? "✓ " : ""}
-                {item.label}
+              <button type="button" onClick={goNext} disabled={!canContinue} className="btn-primary">
+                {step === 3 ? "Continue to enquiry" : "Next step"}
+                <ArrowRight className="h-4 w-4" />
               </button>
-            );
-          })}
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between">
-        <p className="text-sm text-zinc-400">
-          <span className="font-semibold text-white">{selected?.title}</span>
-          {businessLabel ? ` for a ${businessLabel.toLowerCase()} business` : " — pick a business type next"}
-          {extras.length ? `. Extras: ${extras.join(", ")}.` : "."}
-          {selected ? ` MRR: ${selected.mrrLabel}.` : ""}
-        </p>
-        <button type="button" onClick={onContinue} className="btn-primary shrink-0 w-full md:w-auto">
-          Continue to enquiry
-        </button>
+          <aside className="rounded-2xl border border-white/10 bg-gradient-to-b from-indigo-500/10 to-white/5 p-5 backdrop-blur-lg">
+            <p className="text-xs font-medium uppercase tracking-wider text-indigo-300">Estimated growth package</p>
+            <h4 className="mt-3 font-display text-xl font-extrabold tracking-tight text-white">{estimate.title}</h4>
+            <p className="mt-1 text-xs uppercase tracking-wider text-zinc-500">{estimate.subtitle}</p>
+            <div className="mt-5 border-t border-white/10 pt-5">
+              <p className="text-xs text-zinc-500">Setup</p>
+              <p className="font-display text-3xl font-extrabold text-white transition-all duration-500 ease-premium">
+                {pricing.price}
+              </p>
+              <p className="mt-2 text-sm text-zinc-400">
+                then <span className="font-semibold text-zinc-200">{pricing.mrrLabel}</span>
+              </p>
+            </div>
+            <p className="mt-5 text-sm leading-relaxed text-zinc-400">
+              {businessLabel ? `Tuned for ${businessLabel.toLowerCase()} businesses` : "Pick an industry to personalise"}
+              {goals.length ? ` · Goals: ${goals.length} selected` : "."}
+            </p>
+            <ul className="mt-4 space-y-2">
+              {estimate.bullets.slice(0, 3).map((bullet) => (
+                <li key={bullet} className="flex items-start gap-2 text-xs text-zinc-400">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-cyan-300" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
       </div>
     </div>
   );

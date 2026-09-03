@@ -11,16 +11,10 @@ const nextConfig = {
         hostname: "img.youtube.com",
       },
     ],
-    // Allow local images from /public
     unoptimized: false,
   },
-
-  // 🚀 Bypass Vercel build failures
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 
