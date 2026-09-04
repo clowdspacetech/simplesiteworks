@@ -25,6 +25,30 @@ module.exports = {
       transitionTimingFunction: {
         premium: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
+      keyframes: {
+        "float-a": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(0, -14px, 0)" },
+        },
+        "float-b": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(0deg)" },
+          "50%": { transform: "translate3d(-8px, -12px, 0) rotate(1deg)" },
+        },
+        "float-c": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
+          "50%": { transform: "translate3d(0, -10px, 0)" },
+        },
+        "float-d": {
+          "0%, 100%": { transform: "translate3d(0, 0, 0) scale(1)" },
+          "50%": { transform: "translate3d(0, -8px, 0) scale(1.04)" },
+        },
+      },
+      animation: {
+        "float-a": "float-a 7s ease-in-out infinite",
+        "float-b": "float-b 6s ease-in-out infinite",
+        "float-c": "float-c 8s ease-in-out 0.6s infinite",
+        "float-d": "float-d 9s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

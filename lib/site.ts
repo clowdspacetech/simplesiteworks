@@ -162,7 +162,10 @@ export const DEMOS = [
     desc: "Engineered to convert high-intent emergency search traffic instantly. Features prominent tap-to-call integrations, geographic service grids, and a streamlined upfront quote calculator.",
     aesthetic: "High-contrast action accents, strong editorial typography, and live Google Review carousel feeds.",
     href: "/demo/tradesman",
-    src: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80",
+    src: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Tap-to-call, service-area maps, and clear customer response fields.",
     kicker: "Reliable · Local · Insured",
     headline: "Plumbing, electrics and garden work — done properly.",
     summary:
@@ -176,7 +179,10 @@ export const DEMOS = [
     desc: "A fluid, mobile-first experience designed for local patrons on the move. Features smooth digital menu rendering, active Google Maps sync, and an effortless table reservation interface.",
     aesthetic: "Elegant modern spacing, striking full-screen imagery transitions, and premium micro-interactions.",
     href: "/demo/shop",
-    src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
+    src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Fluid digital menus, elegant typography, and automated booking configurations.",
     kicker: "Open today · 8:00–16:00",
     headline: "Coffee, pastry, and a table by the window.",
     summary:
@@ -190,7 +196,10 @@ export const DEMOS = [
     desc: "Designed to assert immediate market authority and capture premium consulting leads. Features structured service matrix grids and an automated introductory discovery call calendar scheduling flow.",
     aesthetic: "Clean editorial layout structures, calming authoritative color palettes, and perfectly balanced text grids.",
     href: "/demo/professional",
-    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Authoritative structural grids, clear appointment schedulers, and client portals.",
     kicker: "Advice you can act on",
     headline: "Calm, credible, easy to enquire.",
     summary:
@@ -204,7 +213,10 @@ export const DEMOS = [
     desc: "A scheduling-first experience designed for high-energy fitness brands. Features dynamic class timetables, membership CTAs, and mobile booking flows that fill empty slots.",
     aesthetic: "Dynamic action-oriented layout, high-energy highlights, and scheduling-first interfaces.",
     href: "/demo/wellness",
-    src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1200&q=80",
+    src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "High-impact hero imagery, dynamic timetable access, and digital sign-up flows.",
     kicker: "Train · Recover · Repeat",
     headline: "Classes, coaching, and a timetable that fills itself.",
     summary:

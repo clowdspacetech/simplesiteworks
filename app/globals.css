@@ -544,7 +544,11 @@ canvas {
   .modal-enter,
   .motion-float,
   .motion-float-slow,
-  .motion-draw {
+  .motion-draw,
+  .animate-float-a,
+  .animate-float-b,
+  .animate-float-c,
+  .animate-float-d {
     animation: none !important;
   }
 

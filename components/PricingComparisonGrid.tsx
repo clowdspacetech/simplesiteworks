@@ -36,26 +36,30 @@ export default function PricingComparisonGrid({
         </div>
       )}
 
-      <div className={`ssw-grid grid grid-cols-1 gap-6 md:grid-cols-3 ${showHeader ? "mt-10" : ""}`}>
+      <div className={`ssw-grid grid grid-cols-1 items-stretch gap-6 pt-3 md:grid-cols-3 ${showHeader ? "mt-10" : ""}`}>
         {packages.map((item, index) => {
           const selected = selectedPackage === item.id;
           return (
-            <Reveal key={item.id} delay={(index % 4) as 0 | 1 | 2 | 3}>
+            <Reveal key={item.id} delay={(index % 4) as 0 | 1 | 2 | 3} className="h-full">
               <article
-                className={`ssw-card ssw-card-hover flex h-full flex-col ${selected ? "ssw-card-selected" : ""}`}
+                className={`ssw-card ssw-card-hover relative flex h-full flex-col ${selected ? "ssw-card-selected" : ""}`}
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    {item.featured && (
-                      <div className="mb-3 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-[11px] font-medium text-cyan-200">
-                        Most chosen
-                      </div>
-                    )}
-                    <h3 className="text-lg font-extrabold tracking-tight text-white">{item.title}</h3>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-zinc-500">
-                      {item.subtitle}
-                    </p>
+                {item.featured && (
+                  <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-cyan-400/20 bg-zinc-950 px-2.5 py-1 text-[11px] font-medium text-cyan-200 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+                    Most chosen
                   </div>
+                )}
+                {selected && !item.featured && (
+                  <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-violet-400/25 bg-zinc-950 px-2.5 py-1 text-[11px] font-medium text-violet-200 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+                    Selected
+                  </div>
+                )}
+
+                <div className="min-w-0">
+                  <h3 className="text-lg font-extrabold tracking-tight text-white">{item.title}</h3>
+                  <p className="mt-1 text-xs font-medium uppercase tracking-wider text-zinc-500">
+                    {item.subtitle}
+                  </p>
                 </div>
 
                 <div className="mt-6 border-b border-white/10 pb-5">

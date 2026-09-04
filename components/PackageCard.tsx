@@ -26,19 +26,19 @@ export default function PackageCard({
   onChoose?: (id: string) => void;
 }) {
   return (
-    <div className={`ssw-card ssw-card-hover flex h-full flex-col ${selected ? "ssw-card-selected" : ""}`}>
+    <div className={`ssw-card ssw-card-hover relative flex h-full flex-col ${selected ? "ssw-card-selected" : ""}`}>
+      {featured && (
+        <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-cyan-400/20 bg-zinc-950 px-2.5 py-1 text-[11px] font-medium text-cyan-200 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+          Most chosen
+        </div>
+      )}
+      {selected && !featured && (
+        <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-violet-400/25 bg-zinc-950 px-2.5 py-1 text-[11px] font-medium text-violet-200 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+          Selected
+        </div>
+      )}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          {featured && (
-            <div className="mb-3 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-[11px] font-medium text-cyan-200">
-              Most chosen
-            </div>
-          )}
-          {selected && !featured && (
-            <div className="mb-3 inline-flex rounded-full border border-violet-400/25 bg-violet-400/10 px-2.5 py-1 text-[11px] font-medium text-violet-200">
-              Selected
-            </div>
-          )}
           <h3 className="text-lg font-extrabold tracking-tight text-white">{title}</h3>
         </div>
         <div className="shrink-0 text-right">
