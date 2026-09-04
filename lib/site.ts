@@ -161,7 +161,7 @@ export const DEMOS = [
     industry: "Built for Plumbers, Electricians, and Landscapers",
     desc: "Engineered to convert high-intent emergency search traffic instantly. Features prominent tap-to-call integrations, geographic service grids, and a streamlined upfront quote calculator.",
     aesthetic: "High-contrast action accents, strong editorial typography, and live Google Review carousel feeds.",
-    href: "/demo/local-trade",
+    href: "/demo/local-plumbing",
     src: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80",
     screenshot:
       "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80",
@@ -212,10 +212,10 @@ export const DEMOS = [
     industry: "Built for Gyms, Yoga Studios, and Personal Trainers",
     desc: "A scheduling-first experience designed for high-energy fitness brands. Features dynamic class timetables, membership CTAs, and mobile booking flows that fill empty slots.",
     aesthetic: "Dynamic action-oriented layout, high-energy highlights, and scheduling-first interfaces.",
-    href: "/demo/wellness",
+    href: "/demo/wellness-clinic",
     src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1600&q=80",
     screenshot:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=80",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80",
     bulletFocus: "High-impact hero imagery, dynamic timetable access, and digital sign-up flows.",
     kicker: "Train · Recover · Repeat",
     headline: "Classes, coaching, and a timetable that fills itself.",

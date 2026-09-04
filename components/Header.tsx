@@ -8,7 +8,7 @@ import CurrencySelector from "./CurrencySelector";
 const nav = [
   { href: "/", label: "Home" },
   { href: "/packages", label: "Packages" },
-  { href: "/demo/local-trade", label: "Demos" },
+  { href: "/demo/local-plumbing", label: "Demos" },
   { href: "/about", label: "About" },
 ];
 

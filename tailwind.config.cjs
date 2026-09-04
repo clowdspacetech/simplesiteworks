@@ -27,27 +27,27 @@ module.exports = {
       },
       keyframes: {
         "float-a": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(-0.4deg)" },
-          "50%": { transform: "translate3d(0, -16px, 0) rotate(0.4deg)" },
+          "0%, 100%": { transform: "translate3d(0, 8px, 0) rotate(-0.5deg)" },
+          "50%": { transform: "translate3d(0, -8px, 0) rotate(0.5deg)" },
         },
         "float-b": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(1deg)" },
-          "50%": { transform: "translate3d(-8px, -14px, 0) rotate(-1deg)" },
+          "0%, 100%": { transform: "translate3d(0, -8px, 0) rotate(0.5deg)" },
+          "50%": { transform: "translate3d(0, 8px, 0) rotate(-0.5deg)" },
         },
         "float-c": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(-1deg)" },
-          "50%": { transform: "translate3d(4px, -12px, 0) rotate(0.5deg)" },
+          "0%, 100%": { transform: "translate3d(0, 6px, 0) rotate(0.35deg)" },
+          "50%": { transform: "translate3d(0, -8px, 0) rotate(-0.35deg)" },
         },
         "float-d": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(0.5deg) scale(1)" },
-          "50%": { transform: "translate3d(0, -16px, 0) rotate(-0.5deg) scale(1.03)" },
+          "0%, 100%": { transform: "translate3d(0, -6px, 0) rotate(-0.45deg)" },
+          "50%": { transform: "translate3d(0, 8px, 0) rotate(0.45deg)" },
         },
       },
       animation: {
         "float-a": "float-a 7s ease-in-out infinite",
-        "float-b": "float-b 6s ease-in-out infinite",
-        "float-c": "float-c 8s ease-in-out 0.6s infinite",
-        "float-d": "float-d 9s ease-in-out infinite",
+        "float-b": "float-b 6s ease-in-out 0.35s infinite",
+        "float-c": "float-c 8s ease-in-out 0.7s infinite",
+        "float-d": "float-d 9s ease-in-out 0.2s infinite",
       },
     },
   },
