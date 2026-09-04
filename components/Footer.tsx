@@ -21,7 +21,7 @@ export default function Footer() {
             <Link href="/packages" className="text-zinc-400 transition-colors duration-500 hover:text-white">
               Packages
             </Link>
-            <Link href="/demo/tradesman" className="text-zinc-400 transition-colors duration-500 hover:text-white">
+            <Link href="/demo/local-trade" className="text-zinc-400 transition-colors duration-500 hover:text-white">
               Demos
             </Link>
             <Link href="/about" className="text-zinc-400 transition-colors duration-500 hover:text-white">

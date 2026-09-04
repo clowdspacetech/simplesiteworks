@@ -161,7 +161,7 @@ export const DEMOS = [
     industry: "Built for Plumbers, Electricians, and Landscapers",
     desc: "Engineered to convert high-intent emergency search traffic instantly. Features prominent tap-to-call integrations, geographic service grids, and a streamlined upfront quote calculator.",
     aesthetic: "High-contrast action accents, strong editorial typography, and live Google Review carousel feeds.",
-    href: "/demo/tradesman",
+    href: "/demo/local-trade",
     src: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80",
     screenshot:
       "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80",

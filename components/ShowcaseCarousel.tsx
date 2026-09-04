@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DEMOS, type DemoId } from "../lib/site";
@@ -7,11 +8,7 @@ import Reveal from "./Reveal";
 
 const SLIDE_ORDER: DemoId[] = ["tradesman", "shop", "professional", "wellness"];
 
-export default function ShowcaseCarousel({
-  onSelectDemo,
-}: {
-  onSelectDemo?: (id: DemoId) => void;
-}) {
+export default function ShowcaseCarousel() {
   const slides = SLIDE_ORDER.map((id) => DEMOS.find((demo) => demo.id === id)!).filter(Boolean);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -35,7 +32,7 @@ export default function ShowcaseCarousel({
       <Reveal className="max-w-2xl">
         <h2 className="ssw-h2">Template & case study showcase</h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-400">
-          Preview industry-ready website templates in a desktop browser frame — each slide shows a clean homepage screenshot.
+          Open a live interactive demo — not a static image — and explore the booking tools prospects actually use.
         </p>
       </Reveal>
 
@@ -46,10 +43,9 @@ export default function ShowcaseCarousel({
       >
         <div className="grid min-w-0 items-stretch lg:grid-cols-[1.15fr_0.85fr]">
           <div className="relative flex min-h-[300px] items-center justify-center overflow-hidden border-b border-white/10 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.18),transparent_55%),linear-gradient(180deg,rgba(24,24,27,0.55),rgba(9,9,11,0.9))] p-5 md:min-h-[440px] md:p-8 lg:border-b-0 lg:border-r">
-            <BrowserFrame
-              src={active.screenshot || active.src}
-              alt={`${active.title} website screenshot`}
-            />
+            <Link href={active.href} className="block w-full max-w-xl transition-transform duration-500 hover:scale-[1.01]">
+              <BrowserFrame src={active.screenshot || active.src} alt={`${active.title} website preview`} />
+            </Link>
           </div>
 
           <div className="flex min-w-0 flex-col p-5 md:p-7">
@@ -111,11 +107,9 @@ export default function ShowcaseCarousel({
                   />
                 ))}
               </div>
-              {onSelectDemo && (
-                <button type="button" className="btn-secondary" onClick={() => onSelectDemo(active.id)}>
-                  Open full preview
-                </button>
-              )}
+              <Link href={active.href} className="btn-secondary">
+                Open full preview
+              </Link>
             </div>
           </div>
         </div>
@@ -126,20 +120,16 @@ export default function ShowcaseCarousel({
 
 function BrowserFrame({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="w-full max-w-xl overflow-hidden rounded-xl border border-white/10 bg-zinc-950/80 shadow-2xl shadow-black/40">
+    <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-zinc-950/80 shadow-2xl shadow-black/40">
       <div className="flex h-8 w-full items-center gap-1.5 border-b border-white/10 px-4">
-        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
         <div className="ml-3 h-4 flex-1 rounded-md border border-white/5 bg-white/5" />
       </div>
       <div className="overflow-hidden bg-zinc-900">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt={alt}
-          className="aspect-[16/10] h-auto w-full object-cover transition-transform duration-500 hover:scale-[1.01]"
-        />
+        <img src={src} alt={alt} className="aspect-[16/10] h-auto w-full object-cover" />
       </div>
     </div>
   );

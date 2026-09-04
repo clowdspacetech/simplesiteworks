@@ -27,20 +27,20 @@ module.exports = {
       },
       keyframes: {
         "float-a": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
-          "50%": { transform: "translate3d(0, -14px, 0)" },
+          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(-0.4deg)" },
+          "50%": { transform: "translate3d(0, -16px, 0) rotate(0.4deg)" },
         },
         "float-b": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(0deg)" },
-          "50%": { transform: "translate3d(-8px, -12px, 0) rotate(1deg)" },
+          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(1deg)" },
+          "50%": { transform: "translate3d(-8px, -14px, 0) rotate(-1deg)" },
         },
         "float-c": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
-          "50%": { transform: "translate3d(0, -10px, 0)" },
+          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(-1deg)" },
+          "50%": { transform: "translate3d(4px, -12px, 0) rotate(0.5deg)" },
         },
         "float-d": {
-          "0%, 100%": { transform: "translate3d(0, 0, 0) scale(1)" },
-          "50%": { transform: "translate3d(0, -8px, 0) scale(1.04)" },
+          "0%, 100%": { transform: "translate3d(0, 0, 0) rotate(0.5deg) scale(1)" },
+          "50%": { transform: "translate3d(0, -16px, 0) rotate(-0.5deg) scale(1.03)" },
         },
       },
       animation: {

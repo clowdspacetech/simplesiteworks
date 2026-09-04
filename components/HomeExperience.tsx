@@ -5,7 +5,6 @@ import PricingComparisonGrid from "./PricingComparisonGrid";
 import ShowcaseCarousel from "./ShowcaseCarousel";
 import FAQAccordion from "./FAQAccordion";
 import ContactForm from "./ContactForm";
-import DemoModal from "./DemoModal";
 import PackageCustomizer from "./PackageCustomizer";
 import HeroVisual from "./HeroVisual";
 import Reveal from "./Reveal";
@@ -17,7 +16,6 @@ import {
   ENQUIRY_EMAIL,
   FAQ_ITEMS,
   type BusinessTypeId,
-  type DemoId,
   type PackageId,
 } from "../lib/site";
 import { scrollToSection } from "../lib/scroll";
@@ -27,7 +25,6 @@ export default function HomeExperience() {
   const [selectedPackage, setSelectedPackage] = useState<PackageId>("Growth");
   const [businessType, setBusinessType] = useState<BusinessTypeId | "">("");
   const [extras, setExtras] = useState<string[]>([]);
-  const [demoId, setDemoId] = useState<DemoId | null>(null);
   const [prefill, setPrefill] = useState({ name: "", email: "", phone: "" });
 
   const choosePackage = useCallback((id: string, target: "packages" | "pricing" | "contact" = "contact") => {
@@ -104,7 +101,7 @@ export default function HomeExperience() {
 
       <section className="ssw-section pt-0">
         <div className="ssw-container">
-          <ShowcaseCarousel onSelectDemo={setDemoId} />
+          <ShowcaseCarousel />
         </div>
       </section>
 
@@ -151,8 +148,6 @@ export default function HomeExperience() {
           </div>
         </div>
       </section>
-
-      <DemoModal demoId={demoId} onClose={() => setDemoId(null)} />
     </>
   );
 }
