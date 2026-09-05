@@ -41,13 +41,14 @@ export default function HomeExperience() {
       <section className="relative max-w-full overflow-x-clip">
         <div className="ssw-container flex min-w-0 flex-col items-center justify-between gap-10 overflow-hidden py-12 md:py-20 lg:flex-row lg:gap-12 lg:py-28">
           <Reveal className="min-w-0 w-full space-y-7 lg:max-w-xl lg:flex-1">
-            <span className="ssw-kicker">Premium local web agency</span>
+            <span className="ssw-kicker">Done-for-you local web design agency</span>
             <h1 className="ssw-h1">
-              Websites that convert
-              <br className="hidden md:block" /> local search into revenue
+              Build a simple website
+              <br className="hidden md:block" /> without tech knowledge
             </h1>
             <p className="ssw-lead">
-              SimpleSiteWorks builds high-performance digital storefronts for local businesses worldwide — engineered for enquiries, automation, and measurable ROI.
+              SimpleSiteWorks is the stress-free way to create a business website without a technical background —
+              high-performance digital storefronts, hands-free copywriting, and launch in about a week.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <button type="button" className="btn-primary" onClick={() => choosePackage("Growth", "packages")}>
@@ -59,7 +60,7 @@ export default function HomeExperience() {
             </div>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 text-sm text-zinc-400">
               <span>From {fromPriceLabel}</span>
-              <span>Global pricing · 6 currencies</span>
+              <span>Zero coding skills needed</span>
               <span>Launch in 1–2 weeks</span>
             </div>
           </Reveal>
@@ -71,6 +72,26 @@ export default function HomeExperience() {
       </section>
 
       <TrustStats />
+
+      <section className="max-w-full overflow-x-clip" aria-label="SimpleSiteWorks search intents">
+        <div className="ssw-container py-10 md:py-12">
+          <Reveal className="max-w-3xl">
+            <h2 className="ssw-h2">The easiest way to get a website live</h2>
+            <p className="mt-3 text-base leading-relaxed text-zinc-400">
+              Whether you need a simple one-page website setup, ROI-driven local landing pages, or a full done-for-you
+              local business website, we handle design, copy, and media so non-tech-savvy owners can launch without stress.
+              From high converting roofing websites and local bakery templates to wellness website builders and florist
+              retail architecture — niche blueprints that convert.
+            </p>
+          </Reveal>
+          <div className="sr-only">
+            Keywords: build website without tech knowledge, make a website with zero coding skills, no-code web design
+            for complete beginners, launch a basic business website in a week, hassle-free digital storefront maker,
+            conversion-first web design agency, local web design agency with marketing automation, done for you
+            contractor web design, booking systems for yoga studios, e-commerce florist website design.
+          </div>
+        </div>
+      </section>
 
       <section className="max-w-full overflow-x-clip">
         <div className="ssw-container ssw-grid grid gap-6 py-12 md:grid-cols-2 lg:grid-cols-4 md:py-16">

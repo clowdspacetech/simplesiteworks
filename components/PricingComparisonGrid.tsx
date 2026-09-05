@@ -92,14 +92,22 @@ export default function PricingComparisonGrid({
                       onClick={() => onChoose(item.id)}
                       className={item.featured || selected ? "btn-primary w-full" : "btn-secondary w-full"}
                     >
-                      Choose {item.title.split(" ")[0]}
+                      {item.id === "Automation"
+                        ? "Choose Automation"
+                        : item.id === "Growth"
+                          ? "Choose Growth"
+                          : "Choose Starter"}
                     </button>
                   ) : (
                     <a
                       href={`/contact?package=${encodeURIComponent(item.id)}`}
                       className={item.featured ? "btn-primary w-full" : "btn-secondary w-full"}
                     >
-                      Choose
+                      {item.id === "Automation"
+                        ? "Choose Automation"
+                        : item.id === "Growth"
+                          ? "Choose Growth"
+                          : "Choose Starter"}
                     </a>
                   )}
                 </div>

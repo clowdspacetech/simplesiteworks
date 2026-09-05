@@ -37,11 +37,19 @@ export default function PricingCard({
       <div className="mt-8">
         {onChoose ? (
           <button type="button" onClick={() => onChoose(packageId)} className="btn-primary w-full">
-            Choose {title.split(" ")[0]}
+            {packageId === "Automation"
+              ? "Choose Automation"
+              : packageId === "Growth"
+                ? "Choose Growth"
+                : "Choose Starter"}
           </button>
         ) : (
           <a href={`/contact?package=${encodeURIComponent(packageId)}`} className="btn-primary w-full">
-            Choose
+            {packageId === "Automation"
+              ? "Choose Automation"
+              : packageId === "Growth"
+                ? "Choose Growth"
+                : "Choose Starter"}
           </a>
         )}
       </div>

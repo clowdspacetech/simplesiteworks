@@ -80,6 +80,50 @@ export const TEMPLATE_SHOWCASE = [
     kicker: "Casual dining · Menu",
     hook: "Expandable menu",
   },
+  {
+    title: "The Apex Roofing System",
+    href: "/demo/apex-roofing",
+    description:
+      "Split-screen & grid hybrid for contractors — Before/After slider, Storm Damage Emergency Ribbon, and credential proof grid.",
+    image:
+      "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-sky-500/35 via-transparent to-slate-950/75",
+    kicker: "Contracting · Roofing",
+    hook: "Before/After + storm",
+  },
+  {
+    title: "The Artisan Crumb",
+    href: "/demo/artisan-crumb",
+    description:
+      "Warm bakery magazine layout with asymmetrical puzzle frames, auto-cycling menu carousel, and a Freshly baked today ticker.",
+    image:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-amber-300/35 via-transparent to-stone-900/55",
+    kicker: "Bakery · Patisserie",
+    hook: "Puzzle + carousel",
+  },
+  {
+    title: "The Fluid Alignment Studio",
+    href: "/demo/fluid-alignment",
+    description:
+      "Ultra-minimal yoga layout with fluid rows, fade-in rituals, and an embedded high-end live class timetable.",
+    image:
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-stone-400/30 via-transparent to-emerald-950/60",
+    kicker: "Yoga · Lifestyle",
+    hook: "Timetable ritual",
+  },
+  {
+    title: "The Botanical Canvas",
+    href: "/demo/botanical-canvas",
+    description:
+      "Dark sensory masonry of floral macros with an occasion-selector wizard for Sympathy, Weddings, and Celebrations.",
+    image:
+      "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-fuchsia-400/30 via-transparent to-zinc-950/80",
+    kicker: "Florist · Retail",
+    hook: "Occasion wizard",
+  },
 ] as const;
 
 const CARD_W = 340;
@@ -119,7 +163,7 @@ export default function ShowcaseCarousel() {
         <div>
           <h2 className="ssw-h2">Template & case study showcase</h2>
           <p className="mt-3 text-base leading-relaxed text-zinc-400">
-            Six distinct niche blueprints — swipe or drag the track to explore live interactive demos.
+            Ten niche blueprints — swipe or drag the track to explore live interactive demos.
           </p>
         </div>
         <div className="flex gap-2">

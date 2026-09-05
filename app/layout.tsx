@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CurrencyProvider from "../components/CurrencyProvider";
 import { CURRENCY_COOKIE, DEFAULT_CURRENCY, isCurrencyCode } from "../lib/currency";
+import { SEO_ABOUT, SEO_DESCRIPTION, SEO_KEYWORDS, SEO_TITLE } from "../lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,16 +23,12 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "SimpleSiteWorks — Premium websites for local businesses",
-  description:
-    "High-converting websites and automation for local businesses worldwide. Global pricing, measurable ROI, launch in weeks.",
-  keywords: [
-    "local business websites",
-    "conversion optimized websites",
-    "local SEO websites",
-    "business automation websites",
-    "premium web design agency",
-  ],
+  title: {
+    default: SEO_TITLE,
+    template: "%s | SimpleSiteWorks",
+  },
+  description: SEO_DESCRIPTION,
+  keywords: [...SEO_KEYWORDS],
   icons: {
     icon: [
       { url: "/branding/favicon.ico", sizes: "any" },
@@ -41,9 +38,16 @@ export const metadata: Metadata = {
     apple: [{ url: "/branding/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "SimpleSiteWorks",
-    description: "Websites • Apps • Made Simple",
-    images: [{ url: "/branding/logo-mark.png", width: 1200, height: 1200, alt: "SimpleSiteWorks" }],
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
+    images: [
+      {
+        url: "/branding/logo-mark.png",
+        width: 1200,
+        height: 1200,
+        alt: "SimpleSiteWorks — build a simple website without tech knowledge",
+      },
+    ],
   },
 };
 
@@ -54,11 +58,58 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const structured = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "SimpleSiteWorks",
-    url: "https://simplesiteworks.com",
-    description: "Premium websites and automation for local businesses worldwide",
-    email: "hello@simplesiteworks.com",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://simplesiteworks.com/#business",
+        name: "SimpleSiteWorks",
+        url: "https://simplesiteworks.com",
+        description: SEO_ABOUT,
+        email: "hello@simplesiteworks.com",
+        knowsAbout: [...SEO_KEYWORDS],
+        slogan: "Websites that convert local search into revenue — without the tech stress",
+      },
+      {
+        "@type": "Service",
+        name: "Done-for-you local business website design",
+        provider: { "@id": "https://simplesiteworks.com/#business" },
+        serviceType: [
+          "Done for you local business website",
+          "Conversion-first web design agency",
+          "No-code web design for complete beginners",
+          "Simple one-page website setup",
+          "Local web design agency with marketing automation",
+        ],
+        areaServed: "Worldwide",
+        description: SEO_DESCRIPTION,
+      },
+      {
+        "@type": "ItemList",
+        name: "SimpleSiteWorks niche website blueprints",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "High converting roofing websites & contractor web design",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Local bakery website template & hospitality digital storefront",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Wellness website builder & booking systems for yoga studios",
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: "E-commerce florist website design & boutique retail site architecture",
+          },
+        ],
+      },
+    ],
   };
 
   return (
