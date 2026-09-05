@@ -48,8 +48,8 @@ export default function ApexRoofingDemoPage() {
           </p>
           <div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-md border-2 border-slate-700">
             <Image
-              src="https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=1200&q=80"
-              alt="High converting roofing website drone grid of residential roof"
+              src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=80"
+              alt="High converting roofing website — dark slate construction site architecture"
               fill
               className="object-cover"
               sizes="600px"
@@ -61,16 +61,16 @@ export default function ApexRoofingDemoPage() {
           <p className="text-xs font-black tracking-[0.2em] text-sky-400 uppercase">Before / After slider</p>
           <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-md border border-slate-700">
             <Image
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80"
-              alt="Roof before restoration"
+              src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80"
+              alt="Architectural structure before roof restoration"
               fill
               className="object-cover"
               sizes="500px"
             />
             <div className="absolute inset-0 overflow-hidden" style={{ width: `${before}%` }}>
               <Image
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80"
-                alt="Roof after restoration"
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80"
+                alt="Modern slate architectural finish after roofing work"
                 fill
                 className="object-cover"
                 sizes="500px"

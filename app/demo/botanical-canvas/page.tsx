@@ -10,11 +10,11 @@ import DemoChrome from "../../../components/demo/DemoChrome";
 const OCCASIONS = ["Sympathy", "Weddings", "Celebrations"] as const;
 
 const BLOOMS = [
-  { src: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=800&q=80", tall: true },
-  { src: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=800&q=80", tall: false },
+  { src: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=800&q=80", tall: true },
+  { src: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80", tall: false },
   { src: "https://images.unsplash.com/photo-1468327768560-75b448c4b124?auto=format&fit=crop&w=800&q=80", tall: false },
-  { src: "https://images.unsplash.com/photo-1457089328109-1a1c09f4a4e2?auto=format&fit=crop&w=800&q=80", tall: true },
-  { src: "https://images.unsplash.com/photo-1519378058459-4c5a9fddb5b5?auto=format&fit=crop&w=800&q=80", tall: false },
+  { src: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=800&q=80", tall: true },
+  { src: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80", tall: false },
   { src: "https://images.unsplash.com/photo-1496062031456-07b21f491dd7?auto=format&fit=crop&w=800&q=80", tall: true },
 ];
 

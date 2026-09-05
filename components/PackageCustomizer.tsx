@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Mail, MessageCircle } from "lucide-react";
 import {
   BUSINESS_TYPES,
+  DEMOS,
   STRATEGY_GOALS,
   suggestPackageFromGoals,
   type BusinessTypeId,
@@ -12,11 +14,46 @@ import {
 } from "../lib/site";
 import { useCurrency } from "./CurrencyProvider";
 import CurrencySelector from "./CurrencySelector";
+import Image from "next/image";
+import Link from "next/link";
 
 const STEPS = [
   { id: 1, label: "Industry" },
   { id: 2, label: "Goals" },
   { id: 3, label: "Contact" },
+] as const;
+
+const INDUSTRY_SECTORS = [
+  {
+    id: "contracting",
+    label: "Contracting",
+    summary: "Trades, roofing, and emergency home services",
+    nicheIds: ["trades", "contracting"] as BusinessTypeId[],
+  },
+  {
+    id: "hospitality",
+    label: "Hospitality",
+    summary: "Restaurants, cafés, and artisan bakeries",
+    nicheIds: ["shop", "bakery"] as BusinessTypeId[],
+  },
+  {
+    id: "wellness",
+    label: "Wellness",
+    summary: "Studios, spas, and lifestyle brands",
+    nicheIds: ["wellness", "yoga"] as BusinessTypeId[],
+  },
+  {
+    id: "professional",
+    label: "Professional Services",
+    summary: "Advisory, finance, and high-trust practices",
+    nicheIds: ["professional"] as BusinessTypeId[],
+  },
+  {
+    id: "retail",
+    label: "Luxury Retail",
+    summary: "Boutique floristry and sensory retail",
+    nicheIds: ["florist"] as BusinessTypeId[],
+  },
 ] as const;
 
 export default function PackageCustomizer({
@@ -44,6 +81,22 @@ export default function PackageCustomizer({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [hoveredSector, setHoveredSector] = useState<string | null>(null);
+
+  const selectedSector =
+    INDUSTRY_SECTORS.find((sector) => businessType && sector.nicheIds.includes(businessType)) ?? null;
+
+  const previewSector =
+    INDUSTRY_SECTORS.find((sector) => sector.id === hoveredSector) ??
+    selectedSector ??
+    INDUSTRY_SECTORS[0];
+
+  const previewNicheId =
+    (businessType && previewSector.nicheIds.includes(businessType) ? businessType : null) ??
+    previewSector.nicheIds[0];
+
+  const previewNiche = BUSINESS_TYPES.find((item) => item.id === previewNicheId) ?? BUSINESS_TYPES[0];
+  const previewDemo = DEMOS.find((demo) => demo.id === previewNiche.demoId);
 
   const suggested = useMemo(() => suggestPackageFromGoals(goals), [goals]);
   const estimateId = goals.length ? suggested : selectedPackage;
@@ -66,6 +119,14 @@ export default function PackageCustomizer({
 
   function toggleGoal(id: StrategyGoalId) {
     setGoals((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
+  }
+
+  function selectSector(sectorId: string) {
+    const sector = INDUSTRY_SECTORS.find((item) => item.id === sectorId);
+    if (!sector) return;
+    const preferred =
+      (businessType && sector.nicheIds.includes(businessType) ? businessType : null) ?? sector.nicheIds[0];
+    onBusinessChange(preferred);
   }
 
   function goNext() {
@@ -133,28 +194,108 @@ export default function PackageCustomizer({
             {step === 1 && (
               <div className="space-y-4 transition-all duration-500 ease-premium">
                 <p className="text-sm font-semibold text-zinc-200">1. Choose your industry archetype</p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {BUSINESS_TYPES.map((item) => {
-                    const active = item.id === businessType;
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => onBusinessChange(item.id)}
-                        className={`min-h-12 rounded-2xl border p-4 text-left backdrop-blur-lg transition-all duration-500 ease-premium hover:-translate-y-0.5 active:scale-[0.98] ${
-                          active
-                            ? "border-cyan-400/35 bg-cyan-400/10 shadow-[0_0_24px_rgba(34,211,238,0.16)]"
-                            : "border-white/10 bg-white/5 hover:border-white/20"
-                        }`}
-                      >
-                        <span className="block text-sm font-semibold text-white">{item.label}</span>
-                        <span className="mt-1 block text-xs text-zinc-400">{item.hint}</span>
-                        <span className="mt-3 block text-[11px] uppercase tracking-wider text-indigo-300">
-                          {item.archetype}
-                        </span>
-                      </button>
-                    );
-                  })}
+                <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2">
+                    {INDUSTRY_SECTORS.map((sector) => {
+                      const selected = previewSector.id === sector.id;
+                      return (
+                        <button
+                          key={sector.id}
+                          type="button"
+                          onMouseEnter={() => setHoveredSector(sector.id)}
+                          onFocus={() => setHoveredSector(sector.id)}
+                          onClick={() => selectSector(sector.id)}
+                          className={`flex w-full flex-col rounded-xl px-4 py-3.5 text-left transition-all duration-300 ${
+                            selected
+                              ? "bg-cyan-400/10 shadow-[inset_0_0_0_1px_rgba(34,211,238,0.35)]"
+                              : "hover:bg-white/5"
+                          }`}
+                        >
+                          <span className={`text-sm font-semibold tracking-tight ${selected ? "text-white" : "text-zinc-300"}`}>
+                            {sector.label}
+                          </span>
+                          <span className="mt-1 text-xs leading-relaxed text-zinc-500">{sector.summary}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={previewNiche.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/80 shadow-[0_24px_60px_rgba(0,0,0,0.35)]"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        {previewDemo && (
+                          <Image
+                            src={previewDemo.screenshot || previewDemo.src}
+                            alt={`${previewNiche.archetype} blueprint preview`}
+                            fill
+                            className="object-cover"
+                            sizes="420px"
+                          />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+                        <p className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
+                          {previewSector.label}
+                        </p>
+                      </div>
+                      <div className="p-5">
+                        <p className="text-xs font-medium tracking-wider text-indigo-300 uppercase">
+                          {previewNiche.label}
+                        </p>
+                        <h4 className="mt-1 font-display text-xl font-extrabold tracking-tight text-white">
+                          {previewNiche.archetype}
+                        </h4>
+                        <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                          {previewDemo?.summary ?? previewNiche.hint}
+                        </p>
+                        {previewSector.nicheIds.length > 1 && (
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {previewSector.nicheIds.map((nicheId) => {
+                              const niche = BUSINESS_TYPES.find((item) => item.id === nicheId);
+                              if (!niche) return null;
+                              const active = niche.id === previewNicheId;
+                              return (
+                                <button
+                                  key={niche.id}
+                                  type="button"
+                                  onClick={() => onBusinessChange(niche.id)}
+                                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                                    active
+                                      ? "bg-indigo-500/30 text-indigo-100"
+                                      : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-zinc-200"
+                                  }`}
+                                >
+                                  {niche.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                        <ul className="mt-4 space-y-2">
+                          {(previewDemo?.features ?? [previewNiche.hint]).slice(0, 3).map((feature) => (
+                            <li key={feature} className="flex items-start gap-2 text-xs text-zinc-400">
+                              <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-cyan-300" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        {previewDemo && (
+                          <Link
+                            href={previewDemo.href}
+                            className="mt-5 inline-flex text-sm font-semibold text-indigo-300 transition hover:text-indigo-200"
+                          >
+                            Preview live blueprint →
+                          </Link>
+                        )}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </div>
             )}

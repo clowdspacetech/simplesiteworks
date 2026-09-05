@@ -65,8 +65,8 @@ export const TRUST_STATS = [
     desc: "Our optimized conversion layouts reliably double the digital leads of standard template sites.",
   },
   {
-    value: "5+ Hours Saved Weekly",
-    label: "Admin time returned",
+    value: "5+",
+    label: "Hours Saved Weekly",
     desc: "Automated booking, intake forms, and payment collection handle administrative heavy lifting for you.",
   },
   {
@@ -286,9 +286,9 @@ export const DEMOS = [
     desc: "Split-screen & grid hybrid with Before/After slider, Storm Damage Emergency Ribbon, and credential grid.",
     aesthetic: "Media-dense drone grids, high-contrast utility borders.",
     href: "/demo/apex-roofing",
-    src: "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=1600&q=80",
+    src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=80",
     screenshot:
-      "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?auto=format&fit=crop&w=1600&q=80",
+      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=80",
     bulletFocus: "Before/After slider, storm ribbon, certifications.",
     kicker: "Contracting · Roofing",
     headline: "Storm-ready. Quote-ready.",
@@ -334,9 +334,9 @@ export const DEMOS = [
     desc: "Dark sensory masonry grid of floral macros with an occasion-selector wizard for Sympathy, Weddings, Celebrations.",
     aesthetic: "Rich dark backgrounds, ultra-crisp floral macros.",
     href: "/demo/botanical-canvas",
-    src: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1600&q=80",
+    src: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=1600&q=80",
     screenshot:
-      "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=1600&q=80",
+      "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=1600&q=80",
     bulletFocus: "Masonry macros, occasion wizard, dark canvas.",
     kicker: "Florist · Retail",
     headline: "Blooms against the dark.",
