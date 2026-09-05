@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
-import { ENQUIRY_EMAIL, isValidEmail } from "../../../lib/site";
+import { ENQUIRY_EMAIL, ENQUIRY_EMAILS, isValidEmail, parseEnquiryEmails } from "../../../lib/site";
 import { sendEnquiryWhatsAppAlerts, type WhatsAppAlertResult } from "../../../lib/whatsapp";
 export const runtime = "nodejs";
 
@@ -11,25 +11,42 @@ type ContactBody = {
   business?: string;
   package?: string;
   extras?: string;
-  enquiryEmail?: string;
   enquiryWhatsAppNumbers?: string[];
 };
 
 type DeliveryResult =
-  | { ok: true; delivered: true; provider: "smtp" | "resend"; enquiryEmail: string; whatsapp?: WhatsAppAlertResult }
-  | { ok: true; delivered: false; provider: "none"; enquiryEmail: string; reason: string; whatsapp?: WhatsAppAlertResult }
-  | { ok: false; error: string; enquiryEmail?: string; whatsapp?: WhatsAppAlertResult };function resolveDestination(requested?: string): string {
-  const configured = (process.env.CONTACT_EMAIL || ENQUIRY_EMAIL).trim();
-  if (!requested || !isValidEmail(requested)) return configured;
-  const allowed = new Set(
-    [ENQUIRY_EMAIL, process.env.CONTACT_EMAIL, process.env.NEXT_PUBLIC_ENQUIRY_EMAIL]
-      .filter(Boolean)
-      .map((value) => value!.trim().toLowerCase()),
-  );
-  if (allowed.has(requested.trim().toLowerCase())) {
-    return requested.trim();
-  }
-  return configured;
+  | {
+      ok: true;
+      delivered: true;
+      provider: "smtp" | "resend";
+      whatsapp?: WhatsAppAlertResult;
+    }
+  | {
+      ok: true;
+      delivered: false;
+      provider: "none";
+      reason: string;
+      whatsapp?: WhatsAppAlertResult;
+    }
+  | {
+      ok: false;
+      error: string;
+      whatsapp?: WhatsAppAlertResult;
+    };
+
+function configuredEnquiryEmails(): string[] {
+  // Server-only destinations — never rely on client-supplied addresses.
+  const fromEnv = [
+    ...parseEnquiryEmails(process.env.CONTACT_EMAIL),
+    ...parseEnquiryEmails(process.env.CONTACT_EMAILS),
+    ...ENQUIRY_EMAILS,
+  ];
+  const unique = [...new Set(fromEnv.map((email) => email.trim()).filter(Boolean))];
+  return unique.length ? unique : [ENQUIRY_EMAIL];
+}
+
+function resolveDestinations(): string[] {
+  return configuredEnquiryEmails();
 }
 
 function escapeHtml(value: string): string {
@@ -40,7 +57,7 @@ function escapeHtml(value: string): string {
     .replaceAll('"', "&quot;");
 }
 
-function buildMessage(data: ContactBody, destination: string) {
+function buildMessage(data: ContactBody, destinations: string[]) {
   const lines = [
     `Name: ${data.name || ""}`,
     `Email: ${data.email || ""}`,
@@ -48,27 +65,26 @@ function buildMessage(data: ContactBody, destination: string) {
     `Business: ${data.business || ""}`,
     `Package: ${data.package || ""}`,
     `Extras: ${data.extras || ""}`,
-    `Enquiry inbox: ${destination}`,
+    `Enquiry inbox: ${destinations.join(", ")}`,
   ];
   const text = lines.join("\n");
   const html = `<pre style="font-family:ui-monospace,monospace;font-size:14px;line-height:1.5">${escapeHtml(text)}</pre>`;
   return { text, html, subject: `New SimpleSiteWorks enquiry from ${data.name || "website"}` };
 }
 
-async function sendWithResend(data: ContactBody, destination: string): Promise<DeliveryResult> {
+async function sendWithResend(data: ContactBody, destinations: string[]): Promise<DeliveryResult> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     return {
       ok: true,
       delivered: false,
       provider: "none",
-      enquiryEmail: destination,
       reason: "RESEND_API_KEY is not set.",
     };
   }
 
   const from = process.env.RESEND_FROM?.trim() || process.env.SMTP_FROM || "SimpleSiteWorks <onboarding@resend.dev>";
-  const { text, html, subject } = buildMessage(data, destination);
+  const { text, html, subject } = buildMessage(data, destinations);
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -78,7 +94,7 @@ async function sendWithResend(data: ContactBody, destination: string): Promise<D
     },
     body: JSON.stringify({
       from,
-      to: [destination],
+      to: destinations,
       reply_to: data.email,
       subject,
       text,
@@ -86,19 +102,27 @@ async function sendWithResend(data: ContactBody, destination: string): Promise<D
     }),
   });
 
-  const payload = (await response.json().catch(() => ({}))) as { id?: string; message?: string; error?: { message?: string } };
+  const payload = (await response.json().catch(() => ({}))) as {
+    id?: string;
+    message?: string;
+    error?: { message?: string };
+  };
 
   if (!response.ok) {
     const message = payload.error?.message || payload.message || `Resend HTTP ${response.status}`;
-    console.error("[contact] Resend delivery failed", { status: response.status, message, destination });
-    return { ok: false, error: message, enquiryEmail: destination };
+    console.error("[contact] Resend delivery failed", { status: response.status, message, destinations });
+    return { ok: false, error: message };
   }
 
-  console.info("[contact] Resend delivery succeeded", { id: payload.id, destination });
-  return { ok: true, delivered: true, provider: "resend", enquiryEmail: destination };
+  console.info("[contact] Resend delivery succeeded", { id: payload.id, destinations });
+  return {
+    ok: true,
+    delivered: true,
+    provider: "resend",
+  };
 }
 
-async function sendWithSmtp(data: ContactBody, destination: string): Promise<DeliveryResult> {
+async function sendWithSmtp(data: ContactBody, destinations: string[]): Promise<DeliveryResult> {
   const host = process.env.SMTP_HOST?.trim();
   const user = process.env.SMTP_USER?.trim();
   const pass = process.env.SMTP_PASS?.trim();
@@ -108,7 +132,6 @@ async function sendWithSmtp(data: ContactBody, destination: string): Promise<Del
       ok: true,
       delivered: false,
       provider: "none",
-      enquiryEmail: destination,
       reason:
         "SMTP is not configured. Add SMTP_HOST, SMTP_USER, and SMTP_PASS to .env.local (see .env.example).",
     };
@@ -116,7 +139,7 @@ async function sendWithSmtp(data: ContactBody, destination: string): Promise<Del
 
   const port = Number(process.env.SMTP_PORT || 587);
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
-  const { text, html, subject } = buildMessage(data, destination);
+  const { text, html, subject } = buildMessage(data, destinations);
 
   const transporter = nodemailer.createTransport({
     host,
@@ -132,32 +155,70 @@ async function sendWithSmtp(data: ContactBody, destination: string): Promise<Del
     return {
       ok: false,
       error: `SMTP connection failed: ${err instanceof Error ? err.message : String(err)}`,
-      enquiryEmail: destination,
     };
   }
 
+  // Gmail is more reliable when each recipient is sent individually,
+  // and the From address matches the authenticated SMTP_USER.
+  const from = process.env.SMTP_FROM?.trim() || user;
+  const accepted: string[] = [];
+  const rejected: string[] = [];
+  const messageIds: string[] = [];
+
   try {
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_FROM?.trim() || user,
-      to: destination,
-      replyTo: data.email,
-      subject,
-      text,
-      html,
-    });
+    for (const destination of destinations) {
+      const info = await transporter.sendMail({
+        from,
+        to: destination,
+        replyTo: data.email,
+        subject,
+        text,
+        html,
+        envelope: {
+          from: user,
+          to: destination,
+        },
+      });
+
+      const okRecipients = (info.accepted ?? []).map(String);
+      const badRecipients = (info.rejected ?? []).map(String);
+      accepted.push(...(okRecipients.length ? okRecipients : [destination]));
+      rejected.push(...badRecipients);
+      if (info.messageId) messageIds.push(info.messageId);
+
+      console.info("[contact] SMTP message accepted", {
+        destination,
+        messageId: info.messageId,
+        accepted: info.accepted,
+        rejected: info.rejected,
+        response: info.response,
+      });
+    }
+
+    if (!accepted.length) {
+      return {
+        ok: false,
+        error: `SMTP accepted no recipients. Rejected: ${rejected.join(", ") || "unknown"}`,
+      };
+    }
+
     console.info("[contact] SMTP delivery succeeded", {
-      messageId: info.messageId,
-      accepted: info.accepted,
-      rejected: info.rejected,
-      destination,
+      messageIds,
+      accepted,
+      rejected,
+      destinations,
+      tip: `Also check Sent mail in ${user}, plus Spam/Promotions for each destination inbox.`,
     });
-    return { ok: true, delivered: true, provider: "smtp", enquiryEmail: destination };
+    return {
+      ok: true,
+      delivered: true,
+      provider: "smtp",
+    };
   } catch (err) {
     console.error("[contact] SMTP send failed", err);
     return {
       ok: false,
       error: `SMTP send failed: ${err instanceof Error ? err.message : String(err)}`,
-      enquiryEmail: destination,
     };
   }
 }
@@ -191,12 +252,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "Package is required." }, { status: 400, headers });
     }
 
-    const destination = resolveDestination(data.enquiryEmail);
+    const destinations = resolveDestinations();
     console.info("[contact] Enquiry received", {
       name: data.name,
       email: data.email,
       package: data.package,
-      destination,
+      destinations,
       hasResend: Boolean(process.env.RESEND_API_KEY),
       hasSmtp: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
       hasWhatsApp: Boolean(
@@ -211,9 +272,9 @@ export async function POST(req: Request) {
     let result: DeliveryResult;
 
     if (process.env.RESEND_API_KEY?.trim()) {
-      result = await sendWithResend(data, destination);
+      result = await sendWithResend(data, destinations);
     } else {
-      result = await sendWithSmtp(data, destination);
+      result = await sendWithSmtp(data, destinations);
     }
 
     const whatsapp = await whatsappPromise;
@@ -228,7 +289,6 @@ export async function POST(req: Request) {
     }
 
     if (!result.delivered) {
-      // Soft success: accepted but not emailed — client should surface this clearly
       console.warn("[contact] Enquiry accepted but not delivered", result);
       return NextResponse.json(result, { status: 200, headers });
     }

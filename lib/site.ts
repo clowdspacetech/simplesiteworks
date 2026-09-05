@@ -157,71 +157,99 @@ export const EXTRAS = [
 export const DEMOS = [
   {
     id: "tradesman",
-    title: "The Local Trade Authority",
-    industry: "Built for Plumbers, Electricians, and Landscapers",
-    desc: "Engineered to convert high-intent emergency search traffic instantly. Features prominent tap-to-call integrations, geographic service grids, and a streamlined upfront quote calculator.",
-    aesthetic: "High-contrast action accents, strong editorial typography, and live Google Review carousel feeds.",
+    title: "The Trade Blueprint",
+    industry: "Built for Plumbers, Electricians, and Emergency Trades",
+    desc: "High-visibility split-column dispatch architecture with a live Active Dispatch Status tracker and one-click emergency call.",
+    aesthetic: "Urgent orange/slate contrast, industrial grids, status-first UI.",
     href: "/demo/local-plumbing",
     src: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80",
     screenshot:
       "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80",
-    bulletFocus: "Tap-to-call, service-area maps, and clear customer response fields.",
-    kicker: "Reliable · Local · Insured",
-    headline: "Plumbing, electrics and garden work — done properly.",
-    summary:
-      "Turn emergency searches into booked jobs with tap-to-call, service-area maps, and instant quote flows.",
-    features: ["Emergency call-outs", "Geographic service grids", "Upfront quote calculator"],
-  },
-  {
-    id: "shop",
-    title: "The Boutique Hospitality Engine",
-    industry: "Built for Cafés, Restaurants, and Bakeries",
-    desc: "A fluid, mobile-first experience designed for local patrons on the move. Features smooth digital menu rendering, active Google Maps sync, and an effortless table reservation interface.",
-    aesthetic: "Elegant modern spacing, striking full-screen imagery transitions, and premium micro-interactions.",
-    href: "/demo/gourmet-bistro",
-    src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80",
-    screenshot:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80",
-    bulletFocus: "Fluid digital menus, elegant typography, and automated booking configurations.",
-    kicker: "Open today · 8:00–16:00",
-    headline: "Coffee, pastry, and a table by the window.",
-    summary:
-      "Menus, maps, and reservations that keep regulars coming back — optimized for mobile discovery.",
-    features: ["Digital menu tabs", "Live hours & map sync", "Table reservations"],
-  },
-  {
-    id: "professional",
-    title: "The Expert Advisory Portal",
-    industry: "Built for Accountants, Tutors, and Consultants",
-    desc: "Designed to assert immediate market authority and capture premium consulting leads. Features structured service matrix grids and an automated introductory discovery call calendar scheduling flow.",
-    aesthetic: "Clean editorial layout structures, calming authoritative color palettes, and perfectly balanced text grids.",
-    href: "/demo/legal-consulting",
-    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
-    screenshot:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
-    bulletFocus: "Authoritative structural grids, clear appointment schedulers, and client portals.",
-    kicker: "Advice you can act on",
-    headline: "Calm, credible, easy to enquire.",
-    summary:
-      "Authority-first layouts with service matrices and discovery-call booking that qualify premium leads.",
-    features: ["Service matrix grids", "Client testimonials", "Discovery call scheduling"],
+    bulletFocus: "Live dispatch board, click-to-call, coverage messaging.",
+    kicker: "Trades · Dispatch",
+    headline: "Rugged engineers. Rapid dispatch.",
+    summary: "Convert emergency searchers with live status and instant call — not another booking form.",
+    features: ["Active Dispatch Status", "One-click emergency call", "Coverage live board"],
   },
   {
     id: "wellness",
-    title: "The Wellness & Lifestyle Hub",
-    industry: "Built for Gyms, Yoga Studios, and Personal Trainers",
-    desc: "A scheduling-first experience designed for high-energy fitness brands. Features dynamic class timetables, membership CTAs, and mobile booking flows that fill empty slots.",
-    aesthetic: "Dynamic action-oriented layout, high-energy highlights, and scheduling-first interfaces.",
+    title: "The Mind & Body Space",
+    industry: "Built for Boutique Spas and Wellness Clinics",
+    desc: "Asymmetrical calm layouts with ambient fade-ins and a premium calendar/intake ritual.",
+    aesthetic: "Serif titles, cream/sage whitespace, soft motion.",
     href: "/demo/wellness-clinic",
-    src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1600&q=80",
+    src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80",
     screenshot:
       "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1600&q=80",
-    bulletFocus: "High-impact hero imagery, dynamic timetable access, and digital sign-up flows.",
-    kicker: "Train · Recover · Repeat",
-    headline: "Classes, coaching, and a timetable that fills itself.",
-    summary:
-      "Dynamic class schedules and membership flows that keep members booking — and trainers free of admin.",
-    features: ["Class timetable switcher", "Membership CTAs", "Mobile booking flows"],
+    bulletFocus: "Calendar intake, day/time ritual, generous whitespace.",
+    kicker: "Wellness · Intake",
+    headline: "Soft light. Quiet rooms. Clear calendars.",
+    summary: "Whitespace-led spa UX with a premium intake flow instead of crowded booking walls.",
+    features: ["Ambient fade-ins", "Premium calendar intake", "Asymmetrical editorial layout"],
+  },
+  {
+    id: "shop",
+    title: "The Culinary Showcase",
+    industry: "Built for Fine Dining, Bars, and Sensory Hospitality",
+    desc: "Dark cinematic hospitality centered on auto-cycling immersive food media — not reservation widgets.",
+    aesthetic: "Charcoal/amber, full-bleed media, sensory grids.",
+    href: "/demo/gourmet-bistro",
+    src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Cinematic media stage, auto-cycling frames, food grid glow.",
+    kicker: "Fine dining · Media",
+    headline: "Built for appetite. Not for booking forms.",
+    summary: "Immersive culinary media experience that sells atmosphere before the ask.",
+    features: ["Auto-cycling cinematic stage", "High-res food grid", "Sensory-first narrative"],
+  },
+  {
+    id: "professional",
+    title: "The Corporate Authority",
+    industry: "Built for Law, Finance, and Advisory Firms",
+    desc: "Serif-forward trust dashboard with animated growth counters and multi-column practice data.",
+    aesthetic: "Imperial navy, brass borders, white metric cards.",
+    href: "/demo/legal-consulting",
+    src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Animated counters, pipeline chart, practice columns.",
+    kicker: "Professional · Finance",
+    headline: "Structured authority. Measured growth.",
+    summary: "High-trust advisory UI that proves competence with live-looking metrics.",
+    features: ["Growth counters", "Pipeline charts", "Practice dashboard columns"],
+  },
+  {
+    id: "automotive",
+    title: "The Shift & Gear Garage",
+    industry: "Built for Mechanics and Auto Workshops",
+    desc: "Industrial-modern garage with Live Bay Availability animation and a bold service selector grid.",
+    aesthetic: "Zinc/black, sky accents, high-contrast uppercase type.",
+    href: "/demo/auto-garage",
+    src: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Bay animator, service grid, industrial typography.",
+    kicker: "Automotive · Bays",
+    headline: "Gritty floors. Hyper-clean UI.",
+    summary: "Show open bays in real time and let drivers pick services without phone tag.",
+    features: ["Live Bay Availability", "Service selector grid", "Industrial-modern theme"],
+  },
+  {
+    id: "bistro",
+    title: "The Taste & Toast Bistro",
+    industry: "Built for Casual Dining and Neighborhood Restaurants",
+    desc: "Warm editorial magazine layout with an expandable digital menu and a streamlined table micro-flow.",
+    aesthetic: "Cream paper, rose accents, serif chaptering.",
+    href: "/demo/taste-toast",
+    src: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1600&q=80",
+    screenshot:
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1600&q=80",
+    bulletFocus: "Expandable menu chapters, table hold micro-flow.",
+    kicker: "Casual dining · Menu",
+    headline: "Plates worth lingering over.",
+    summary: "Food-magazine UX with expandable courses and a light reservation hold.",
+    features: ["Expandable menu grid", "Table micro-flow", "Editorial magazine layout"],
   },
 ];
 
@@ -277,9 +305,49 @@ export const APP_OFFERINGS = [
   { title: "Loyalty Apps", desc: "Points and rewards" },
 ];
 
-/** Destination inbox for customer enquiries */
-export const ENQUIRY_EMAIL =
-  process.env.NEXT_PUBLIC_ENQUIRY_EMAIL?.trim() || "hello@simplesiteworks.com";
+const EMAIL_PATTERN =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
+export function isValidEmail(value: string): boolean {
+  const email = value.trim();
+  if (!email || email.length > 254) return false;
+  if (email.includes("..")) return false;
+  return EMAIL_PATTERN.test(email);
+}
+
+/** Destination inbox(es) for customer enquiries (comma/semicolon separated in env). */
+export function parseEnquiryEmails(raw?: string): string[] {
+  if (!raw?.trim()) return [];
+  return [
+    ...new Set(
+      raw
+        .split(/[,;]+/)
+        .map((value) => value.trim())
+        .filter((value) => isValidEmail(value)),
+    ),
+  ];
+}
+
+function collectEnquiryEmails(...sources: Array<string | undefined>): string[] {
+  return [
+    ...new Set(
+      sources
+        .flatMap((source) => parseEnquiryEmails(source))
+        .map((email) => email.trim()),
+    ),
+  ];
+}
+
+export const ENQUIRY_EMAILS = collectEnquiryEmails(
+  process.env.CONTACT_EMAIL,
+  process.env.CONTACT_EMAILS,
+  // Legacy public vars still accepted server-side, but never shown in the UI.
+  process.env.NEXT_PUBLIC_ENQUIRY_EMAIL,
+  process.env.NEXT_PUBLIC_ENQUIRY_EMAILS,
+);
+
+/** Primary destination inbox for customer enquiries (first configured address). */
+export const ENQUIRY_EMAIL = ENQUIRY_EMAILS[0] || "hello@simplesiteworks.com";
 
 const WHATSAPP_E164 = /^\+[1-9]\d{7,14}$/;
 
@@ -297,21 +365,16 @@ export function parseWhatsAppNumbers(raw?: string): string[] {
 }
 
 export const ENQUIRY_WHATSAPP_NUMBERS = parseWhatsAppNumbers(
-  process.env.CONTACT_WHATSAPP_NUMBERS ?? process.env.NEXT_PUBLIC_CONTACT_WHATSAPP_NUMBERS,
+  process.env.NEXT_PUBLIC_CONTACT_WHATSAPP_NUMBERS ?? process.env.CONTACT_WHATSAPP_NUMBERS,
 );
 
 export function isValidWhatsAppNumber(value: string): boolean {
   return WHATSAPP_E164.test(value.trim());
 }
 
-const EMAIL_PATTERN =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
-
-export function isValidEmail(value: string): boolean {
-  const email = value.trim();
-  if (!email || email.length > 254) return false;
-  if (email.includes("..")) return false;
-  return EMAIL_PATTERN.test(email);
+/** Digits-only number for wa.me links. */
+export function toWhatsAppMeNumber(value: string): string {
+  return value.replace(/\D/g, "");
 }
 
 export function normalizePackageId(value: string | null | undefined): PackageId | undefined {

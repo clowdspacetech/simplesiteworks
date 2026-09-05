@@ -2,91 +2,213 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  animate,
+  type PanInfo,
+} from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Reveal from "./Reveal";
 
-const TEMPLATES = [
+export const TEMPLATE_SHOWCASE = [
   {
     title: "The Trade Blueprint",
     href: "/demo/local-plumbing",
     description:
-      "A high-conversion, rugged, and high-visibility framework optimized for immediate 24/7 emergency dispatch and fast booking intakes.",
+      "High-visibility emergency layouts with a live Active Dispatch Status tracker and one-click click-to-call intake.",
     image:
       "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-orange-500/30 via-transparent to-slate-900/50",
-    kicker: "Trades · Emergency dispatch",
+    accent: "from-orange-500/40 via-transparent to-slate-950/70",
+    kicker: "Trades · Dispatch",
+    hook: "Live status + call",
   },
   {
     title: "The Mind & Body Space",
     href: "/demo/wellness-clinic",
     description:
-      "An elegant, minimalist, and deeply calming aesthetic crafted carefully for premium boutique spas, wellness clinics, and health practitioners.",
+      "Asymmetrical calm layouts, ambient fade-ins, generous whitespace, and a premium calendar/intake ritual.",
     image:
       "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-emerald-400/25 via-transparent to-stone-900/40",
-    kicker: "Wellness · Calm booking",
+    accent: "from-emerald-400/30 via-transparent to-stone-950/50",
+    kicker: "Wellness · Intake",
+    hook: "Calendar ritual",
   },
   {
     title: "The Culinary Showcase",
     href: "/demo/gourmet-bistro",
     description:
-      "A vibrant, bold, dark-themed sensory experience built explicitly for fine dining, coffee houses, and cocktail bars to drive instant table reservations.",
+      "Dark sensory hospitality built around immersive food media — auto-cycling cinematic grids, not generic booking blocks.",
     image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-rose-500/30 via-transparent to-black/55",
-    kicker: "Hospitality · Reservations",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-amber-500/35 via-transparent to-black/70",
+    kicker: "Fine dining · Media",
+    hook: "Immersive media",
   },
   {
     title: "The Corporate Authority",
     href: "/demo/legal-consulting",
     description:
-      "A crisp, ultra-professional, serif-heavy layout engineered specifically for high-trust professional services, finance agencies, and law firms.",
+      "Serif-forward trust architecture with a multi-column advisory dashboard, growth counters, and data charts.",
     image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
-    accent: "from-indigo-400/20 via-transparent to-slate-950/50",
-    kicker: "Professional · High trust",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-indigo-400/30 via-transparent to-indigo-950/70",
+    kicker: "Professional · Finance",
+    hook: "Live metrics",
+  },
+  {
+    title: "The Shift & Gear Garage",
+    href: "/demo/auto-garage",
+    description:
+      "Industrial-modern automotive: Live Bay Availability animator, service selector grid, and bold high-contrast type.",
+    image:
+      "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-sky-400/30 via-transparent to-zinc-950/75",
+    kicker: "Automotive · Bays",
+    hook: "Bay availability",
+  },
+  {
+    title: "The Taste & Toast Bistro",
+    href: "/demo/taste-toast",
+    description:
+      "Warm editorial restaurant magazine layout with an expandable digital menu grid and a streamlined reservation micro-flow.",
+    image:
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80",
+    accent: "from-rose-400/30 via-transparent to-stone-950/60",
+    kicker: "Casual dining · Menu",
+    hook: "Expandable menu",
   },
 ] as const;
 
+const CARD_W = 340;
+const GAP = 24;
+const STEP = CARD_W + GAP;
+
 export default function ShowcaseCarousel() {
+  const [index, setIndex] = useState(0);
+  const x = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 280, damping: 36, mass: 0.85 });
+  const dragMoved = useRef(false);
+
+  const maxIndex = TEMPLATE_SHOWCASE.length - 1;
+
+  function goTo(next: number) {
+    const clamped = Math.max(0, Math.min(maxIndex, next));
+    setIndex(clamped);
+    animate(x, -clamped * STEP, { type: "spring", stiffness: 280, damping: 34 });
+  }
+
+  function onDragEnd(_: unknown, info: PanInfo) {
+    const offset = info.offset.x;
+    const velocity = info.velocity.x;
+    dragMoved.current = Math.abs(offset) > 12 || Math.abs(velocity) > 200;
+    let next = index;
+    if (offset < -80 || velocity < -400) next = index + 1;
+    else if (offset > 80 || velocity > 400) next = index - 1;
+    goTo(next);
+    window.setTimeout(() => {
+      dragMoved.current = false;
+    }, 80);
+  }
+
   return (
     <div>
-      <Reveal className="max-w-2xl">
-        <h2 className="ssw-h2">Template & case study showcase</h2>
-        <p className="mt-3 text-base leading-relaxed text-zinc-400">
-          Four premium niche templates — each a fully branded live demo, not a static lightbox.
-        </p>
+      <Reveal className="flex max-w-3xl flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 className="ssw-h2">Template & case study showcase</h2>
+          <p className="mt-3 text-base leading-relaxed text-zinc-400">
+            Six distinct niche blueprints — swipe or drag the track to explore live interactive demos.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            aria-label="Previous template"
+            onClick={() => goTo(index - 1)}
+            disabled={index === 0}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10 disabled:opacity-30"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next template"
+            onClick={() => goTo(index + 1)}
+            disabled={index === maxIndex}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10 disabled:opacity-30"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
       </Reveal>
 
-      <div className="ssw-grid mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {TEMPLATES.map((template, index) => (
-          <Reveal key={template.href} delay={(index % 4) as 0 | 1 | 2 | 3} className="h-full">
+      <div className="relative mt-10 -mx-4 overflow-hidden px-4 sm:-mx-0 sm:px-0">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-[#0a0a0b] to-transparent sm:w-12" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-[#0a0a0b] to-transparent sm:w-12" />
+
+        <motion.div
+          className="flex cursor-grab gap-6 active:cursor-grabbing"
+          style={{ x: springX }}
+          drag="x"
+          dragConstraints={{ left: -maxIndex * STEP, right: 0 }}
+          dragElastic={0.12}
+          onDragEnd={onDragEnd}
+        >
+          {TEMPLATE_SHOWCASE.map((template) => (
             <Link
+              key={template.href}
               href={template.href}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+              className="group relative shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 transition-[box-shadow,transform] duration-500 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.12),inset_0_1px_40px_rgba(255,255,255,0.06),0_30px_80px_rgba(0,0,0,0.45)]"
+              style={{ width: CARD_W }}
+              onClick={(e) => {
+                if (dragMoved.current) e.preventDefault();
+              }}
             >
-              <div className="relative aspect-video overflow-hidden bg-slate-200">
+              <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900">
                 <Image
                   src={template.image}
                   alt={`${template.title} preview`}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  sizes="340px"
+                  draggable={false}
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t ${template.accent}`} />
-                <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/35 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-md">
+                <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
                   {template.kicker}
+                </span>
+                <span className="absolute right-4 bottom-4 rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-md">
+                  {template.hook}
                 </span>
               </div>
 
-              <div className="flex flex-1 flex-col p-5 sm:p-6">
-                <h3 className="text-lg font-extrabold tracking-tight text-slate-900">{template.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{template.description}</p>
-                <span className="mt-5 inline-flex items-center text-sm font-semibold text-indigo-600 transition-colors duration-300 group-hover:text-indigo-500">
-                  Launch Interactive Demo →
+              <div className="relative flex flex-col p-5 sm:p-6">
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.06),transparent_60%)]" />
+                <h3 className="relative text-lg font-extrabold tracking-tight text-white">{template.title}</h3>
+                <p className="relative mt-2 flex-1 text-sm leading-relaxed text-zinc-400">{template.description}</p>
+                <span className="relative mt-5 inline-flex items-center text-sm font-semibold text-indigo-300 transition-colors duration-300 group-hover:text-indigo-200">
+                  Launch Interactive Demo
+                  <span className="ml-1 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </span>
               </div>
             </Link>
-          </Reveal>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="mt-6 flex justify-center gap-2">
+        {TEMPLATE_SHOWCASE.map((t, i) => (
+          <button
+            key={t.href}
+            type="button"
+            aria-label={`Go to ${t.title}`}
+            onClick={() => goTo(i)}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === index ? "w-8 bg-indigo-400" : "w-1.5 bg-white/20 hover:bg-white/40"
+            }`}
+          />
         ))}
       </div>
     </div>

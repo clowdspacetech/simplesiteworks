@@ -5,7 +5,12 @@ import PricingComparisonGrid from "./PricingComparisonGrid";
 import PackageCustomizer from "./PackageCustomizer";
 import ContactForm from "./ContactForm";
 import { useCurrency } from "./CurrencyProvider";
-import { BUSINESS_TYPES, ENQUIRY_EMAIL, type BusinessTypeId, type PackageId } from "../lib/site";
+import {
+  BUSINESS_TYPES,
+  ENQUIRY_WHATSAPP_NUMBERS,
+  type BusinessTypeId,
+  type PackageId,
+} from "../lib/site";
 import { scrollToSection } from "../lib/scroll";
 
 export default function PackagesExperience({
@@ -67,7 +72,7 @@ export default function PackagesExperience({
             businessType={businessLabel}
             extras={extras}
             onPackageChange={setSelectedPackage}
-            enquiryEmail={ENQUIRY_EMAIL}
+            enquiryWhatsAppNumbers={ENQUIRY_WHATSAPP_NUMBERS}
             initialName={prefill.name}
             initialEmail={prefill.email}
             initialPhone={prefill.phone}

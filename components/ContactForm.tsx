@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ENQUIRY_EMAIL, ENQUIRY_WHATSAPP_NUMBERS, isValidEmail, resolvePackageId, type PackageId } from "../lib/site";
+import {
+  ENQUIRY_WHATSAPP_NUMBERS,
+  isValidEmail,
+  resolvePackageId,
+  toWhatsAppMeNumber,
+  type PackageId,
+} from "../lib/site";
 import { useCurrency } from "./CurrencyProvider";
 
 type Status = "idle" | "loading" | "done" | "queued" | "whatsapp" | "error";
@@ -17,7 +23,6 @@ type ContactApiResponse = {
   ok?: boolean;
   delivered?: boolean;
   provider?: string;
-  enquiryEmail?: string;
   reason?: string;
   error?: string;
 };
@@ -46,7 +51,6 @@ export default function ContactForm({
   businessType,
   extras = [],
   onPackageChange,
-  enquiryEmail = ENQUIRY_EMAIL,
   enquiryWhatsAppNumbers = ENQUIRY_WHATSAPP_NUMBERS,
   initialName = "",
   initialEmail = "",
@@ -56,16 +60,14 @@ export default function ContactForm({
   businessType?: string;
   extras?: string[];
   onPackageChange?: (pkg: PackageId) => void;
-  /** Destination address for customer enquiries. */
-  enquiryEmail?: string;
-  /** WhatsApp numbers (E.164) to alert on new enquiries. */
+  /** WhatsApp numbers (E.164). First number is used for the customer chat button. */
   enquiryWhatsAppNumbers?: string[];
   initialName?: string;
   initialEmail?: string;
   initialPhone?: string;
 }) {
-  const destinationEmail = enquiryEmail.trim() || ENQUIRY_EMAIL;
   const destinationWhatsApp = enquiryWhatsAppNumbers.length ? enquiryWhatsAppNumbers : ENQUIRY_WHATSAPP_NUMBERS;
+  const whatsappChatNumber = destinationWhatsApp[0] ?? "";
   const { packages } = useCurrency();
   const initialPackage = resolvePackageId(selectedPackage);
   const [pkg, setPkg] = useState<PackageId>(initialPackage);
@@ -103,23 +105,6 @@ export default function ContactForm({
 
   const extrasNote = useMemo(() => (extras.length ? extras.join(", ") : ""), [extras]);
 
-  function buildMailtoHref() {
-    const subject = encodeURIComponent(`SimpleSiteWorks enquiry — ${pkg}`);
-    const body = encodeURIComponent(
-      [
-        `Name: ${name.trim()}`,
-        `Email: ${email.trim()}`,
-        `Phone: ${phone.trim() || "—"}`,
-        `Business: ${business.trim() || "—"}`,
-        `Package: ${pkg}`,
-        extrasNote ? `Extras: ${extrasNote}` : null,
-      ]
-        .filter(Boolean)
-        .join("\n"),
-    );
-    return `mailto:${destinationEmail}?subject=${subject}&body=${body}`;
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const nextErrors = validate({ name, email, phone, package: pkg });
@@ -136,7 +121,6 @@ export default function ContactForm({
       business: business.trim(),
       package: pkg,
       extras: extrasNote,
-      enquiryEmail: destinationEmail,
       enquiryWhatsAppNumbers: destinationWhatsApp,
     };
 
@@ -161,7 +145,7 @@ export default function ContactForm({
       if (!res.ok || data.ok === false) {
         console.error("[contact-form] Submission failed", { status: res.status, data });
         setStatus("error");
-        setBanner(data.error || "We couldn’t send that just now. Try WhatsApp, email us directly, or try again.");
+        setBanner(data.error || "We couldn’t send that just now. Try WhatsApp, or try again in a moment.");
         return;
       }
 
@@ -172,7 +156,6 @@ export default function ContactForm({
         return;
       }
 
-      // Accepted by API but mailer not configured / not delivered
       console.warn("[contact-form] Enquiry queued without delivery", data);
       setQueueReason(data.reason || "Email delivery is not configured on the server yet.");
       setStatus("queued");
@@ -181,7 +164,7 @@ export default function ContactForm({
     } catch (err) {
       console.error("[contact-form] Network error", err);
       setStatus("error");
-      setBanner("Network error — check your connection and try again, or email us directly.");
+      setBanner("Network error — check your connection and try again, or reach us on WhatsApp.");
     }
   }
 
@@ -190,6 +173,11 @@ export default function ContactForm({
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) {
       setBanner("Fill in the form before opening WhatsApp.");
+      return;
+    }
+
+    if (!whatsappChatNumber) {
+      setBanner("WhatsApp is unavailable right now. Please submit the form instead.");
       return;
     }
 
@@ -202,7 +190,12 @@ export default function ContactForm({
       phone.trim() ? `Phone: ${phone.trim()}` : null,
     ].filter(Boolean);
 
-    window.open(`https://wa.me/?text=${encodeURIComponent(lines.join(" "))}`, "_blank", "noopener,noreferrer");
+    const phoneDigits = toWhatsAppMeNumber(whatsappChatNumber);
+    window.open(
+      `https://wa.me/${phoneDigits}?text=${encodeURIComponent(lines.join(" "))}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
     setStatus("whatsapp");
     setBanner(null);
   }
@@ -226,10 +219,10 @@ export default function ContactForm({
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-zinc-400">
           {status === "whatsapp"
-            ? "Your details are in the message. Send it when you’re ready — we’ll pick it up from there."
+            ? "Your details are prefilled in the chat. Send it when you’re ready — we’ll pick it up from there."
             : status === "queued"
-              ? `We received your details, but email delivery isn’t configured yet. Open your mail app to send the enquiry to ${destinationEmail}, or try WhatsApp.`
-              : `Thanks — we’ll reply from ${destinationEmail} within one working day.`}
+              ? "We received your details, but email delivery isn’t ready yet. Try WhatsApp, or submit again shortly."
+              : "Thanks — we’ll get back to you within one working day."}
         </p>
         {status === "queued" && queueReason && (
           <p className="mt-3 rounded-xl border border-amber-400/20 bg-amber-500/10 px-3.5 py-2.5 text-left text-xs text-amber-100">
@@ -237,11 +230,6 @@ export default function ContactForm({
           </p>
         )}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          {status === "queued" && (
-            <a href={buildMailtoHref()} className="btn-primary w-full sm:w-auto">
-              Email {destinationEmail}
-            </a>
-          )}
           <button type="button" onClick={resetForm} className="btn-secondary w-full sm:w-auto">
             Send another
           </button>
@@ -253,11 +241,7 @@ export default function ContactForm({
   return (
     <form onSubmit={handleSubmit} className="ssw-card w-full max-w-lg space-y-5" noValidate>
       <p className="text-xs leading-relaxed text-zinc-500">
-        Enquiries go to{" "}
-        <a className="break-all text-indigo-300 underline-offset-2 hover:underline" href={`mailto:${destinationEmail}`}>
-          {destinationEmail}
-        </a>
-        .
+        Submit the form or WhatsApp us — we typically reply within one working day.
       </p>
 
       {status === "loading" && (
@@ -401,13 +385,10 @@ export default function ContactForm({
         </p>
       )}
       {banner && (
-        <div className="space-y-3" role="alert">
+        <div role="alert">
           <p className="rounded-xl border border-rose-400/20 bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-200">
             {banner}
           </p>
-          <a href={buildMailtoHref()} className="btn-secondary w-full">
-            Email us instead
-          </a>
         </div>
       )}
       <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center">

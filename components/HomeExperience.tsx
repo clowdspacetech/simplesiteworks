@@ -13,7 +13,7 @@ import { useCurrency } from "./CurrencyProvider";
 import {
   BUSINESS_TYPES,
   DONE_FOR_YOU,
-  ENQUIRY_EMAIL,
+  ENQUIRY_WHATSAPP_NUMBERS,
   FAQ_ITEMS,
   type BusinessTypeId,
   type PackageId,
@@ -140,7 +140,7 @@ export default function HomeExperience() {
               businessType={businessLabel}
               extras={extras}
               onPackageChange={setSelectedPackage}
-              enquiryEmail={ENQUIRY_EMAIL}
+              enquiryWhatsAppNumbers={ENQUIRY_WHATSAPP_NUMBERS}
               initialName={prefill.name}
               initialEmail={prefill.email}
               initialPhone={prefill.phone}

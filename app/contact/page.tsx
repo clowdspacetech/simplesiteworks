@@ -1,5 +1,5 @@
 import ContactForm from "../../components/ContactForm";
-import { ENQUIRY_EMAIL, resolvePackageId } from "../../lib/site";
+import { ENQUIRY_WHATSAPP_NUMBERS, resolvePackageId } from "../../lib/site";
 
 export default async function ContactPage({
   searchParams,
@@ -21,7 +21,11 @@ export default async function ContactPage({
               Tell us about your business and we&apos;ll recommend the tier that maximizes your ROI.
             </p>
           </div>
-          <ContactForm selectedPackage={pkg} businessType={business} enquiryEmail={ENQUIRY_EMAIL} />
+          <ContactForm
+            selectedPackage={pkg}
+            businessType={business}
+            enquiryWhatsAppNumbers={ENQUIRY_WHATSAPP_NUMBERS}
+          />
         </div>
       </section>
     </main>
