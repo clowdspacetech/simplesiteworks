@@ -1,100 +1,118 @@
-SimpleSiteWorks — clean, modern starter for building sites for local businesses.
+# SimpleSiteWorks
 
-Quick start
------------
+## Project Overview
 
-1. Install dependencies:
+SimpleSiteWorks is the marketing website for a small web agency that builds fast, modern websites for local businesses such as trades, cafés, clinics, florists and professional services.
+
+The site includes:
+
+- A home page with a hero section, trust stats and packages (Starter, Growth, Automation).
+- A swipeable showcase of live niche template demos.
+- A guided "Strategy Brief" package builder.
+- An enquiry form that sends submissions straight to the team's inbox.
+
+## Features
+
+- **Email-based enquiry form**: submissions are posted to `/api/contact` and delivered by email over SMTP (Nodemailer). Destination addresses are stored only on the server and are never shown on the site. An optional WhatsApp button opens a chat with a prefilled message.
+- **Logo support**: brand logo, favicons and Open Graph image are served from `public/branding/` and are easy to swap out.
+- **Responsive design**: mobile-first layouts built with Tailwind CSS, with smooth Framer Motion animations.
+- **Live template demos**: standalone niche demo pages under `/demo/*`, each with a "Return to Agency Home" bar.
+- **SEO ready**: page metadata, keywords and JSON-LD structured data are configured in `app/layout.tsx` and `lib/seo.ts`.
+- **Simple setup**: install, add environment variables, run.
+- **Easy deployment**: one-click deploys on Vercel.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (App Router) with TypeScript
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/) v4
+- [Framer Motion](https://motion.dev/) for animation
+- [Lucide](https://lucide.dev/) icons
+- [Nodemailer](https://nodemailer.com/) for enquiry emails
+- [Vercel](https://vercel.com/) for hosting
+
+## Installation & Setup
+
+### Prerequisites
+
+- Node.js 20 or newer
+- npm
+
+### 1. Clone and install
 
 ```bash
+git clone https://github.com/clowdspacetech/simplesiteworks.git
+cd simplesiteworks
 npm install
 ```
 
-2. Create a `.env.local` in the project root (see example below).
+### 2. Add environment variables
 
-3. Start the dev server:
+Create a `.env.local` file in the project root and add the variables below **manually**.
+
+> **Important:** Environment variables contain private credentials. Never commit `.env.local` (or any file containing real values) to git, and never paste real values into this README or other docs.
+
+| Variable | Purpose |
+| --- | --- |
+| `CONTACT_EMAIL` | Inbox (or comma-separated inboxes) that receives enquiries. Server-only. |
+| `SMTP_HOST` | SMTP server host |
+| `SMTP_PORT` | SMTP server port (defaults to 587) |
+| `SMTP_SECURE` | Optional. Set to `true` for TLS (automatic on port 465) |
+| `SMTP_USER` | SMTP username |
+| `SMTP_PASS` | SMTP password or app password |
+| `SMTP_FROM` | "From" address used for enquiry emails |
+| `RESEND_API_KEY` | Optional. Use [Resend](https://resend.com/) instead of SMTP |
+| `RESEND_FROM` | Optional. "From" address when using Resend |
+| `NEXT_PUBLIC_CONTACT_WHATSAPP_NUMBERS` | Optional. WhatsApp number(s) for the chat button, in international format |
+
+If the email variables are missing, the form will still render, but submissions won't be delivered.
+
+### 3. Run locally
 
 ```bash
 npm run dev
 ```
 
-Open http://localhost:3000 in your browser.
+Open [http://localhost:3000](http://localhost:3000).
 
-Environment variables (`.env.local`)
--------------------------------
-
-Create a file named `.env.local` (copy from `.env.example`) to enable contact email delivery:
-
-```env
-NEXT_PUBLIC_ENQUIRY_EMAIL=clowdspace98@gmail.com
-CONTACT_EMAIL=clowdspace98@gmail.com
-
-# Gmail: use an App Password (not your normal password)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=clowdspace98@gmail.com
-SMTP_PASS=Clowdspace@123
-SMTP_FROM="SimpleSiteWorks <clowdspace98@gmail.com>"
-
-# Optional alternative to SMTP:
-# RESEND_API_KEY=re_xxxxxxxx
-# RESEND_FROM="SimpleSiteWorks <onboarding@resend.dev>"
-```
-
-**Important:** Without `SMTP_*` (or `RESEND_API_KEY`), the API accepts the enquiry but does **not** send email. The form will show a clear “not delivered” state and a mailto fallback.
-
-Testing the contact API
------------------------
-
-With the dev server running, you can POST to the API route to test email sending:
+### Other scripts
 
 ```bash
-curl -X POST http://localhost:3000/api/contact \
-	-H "Content-Type: application/json" \
-	-d '{"name":"Test","email":"test@example.com","phone":"123","business":"Demo","package":"Basic"}'
+npm run build   # production build
+npm run start   # serve the production build
+npm run lint    # run ESLint
 ```
 
-If SMTP (or Resend) is configured correctly the route should return JSON `{ "ok": true, "delivered": true }`. If mailer env vars are missing it returns `{ "ok": true, "delivered": false }` and the UI prompts a mailto fallback.
+## Deployment
 
-Common dev issues & fixes
--------------------------
+The site is designed to deploy on Vercel:
 
-- "1 high severity vulnerability" after `npm install` — run `npm audit` and then:
+1. Push the repository to GitHub.
+2. In the [Vercel dashboard](https://vercel.com/dashboard), click **Add New → Project** and import the repository. Vercel detects Next.js automatically.
+3. Go to **Project → Settings → Environment Variables** and add the same variables listed in [Installation & Setup](#2-add-environment-variables). Environment variables must be added in the Vercel dashboard. They are not read from the repository.
+4. Deploy. After changing any environment variable, redeploy for the change to take effect.
 
-```bash
-npm audit fix
-# if needed (may introduce breaking changes):
-npm audit fix --force
-```
+## Logo & Assets
 
-- Dev server port in use — set `PORT` in `.env.local` or run `PORT=3001 npm run dev`.
-- Nodemailer errors (auth, connection) — confirm `SMTP_*` env vars and that your SMTP provider allows SMTP connections from your machine.
-- Missing env vars cause API 500s — check terminal logs for errors and ensure `.env.local` is present, then restart the dev server.
-- Tailwind not applying — ensure `app/globals.css` contains the `@tailwind` directives and `tailwind.config.cjs` includes the `app/` and `components/` paths.
-- Images not loading / optimization errors — local SVGs are used; if adding remote images, configure `next.config.ts` domains.
+Brand assets live in `public/branding/`:
 
-Project structure
------------------
+| File | Used for |
+| --- | --- |
+| `logo-mark.png` | Logo on dark tiles and the Open Graph / social share image |
+| `logo-mark-cropped.png` | Logo on transparent backgrounds (header and footer) |
+| `favicon.ico`, `favicon-16.png`, `favicon-32.png` | Browser tab icons |
+| `apple-touch-icon.png` | iOS home screen icon |
 
-- `app/` — Next.js app router pages and layout.
-- `components/` — reusable UI components (`Header`, `Footer`, `PackageCard`, `ContactForm`, etc.).
-- `public/` — logo and demo thumbnails.
-- `app/api/contact/route.ts` — API route that sends form submissions via Nodemailer.
+To update the logo:
 
-Running production build
-------------------------
+- **Same file names**: replace the files in `public/branding/` with your new images.
+- **New file names**: update the path constants at the top of `components/Logo.tsx`.
+- **Favicons and social image**: update the paths in `app/layout.tsx` (`metadata.icons` and the Open Graph image).
 
-```bash
-npm run build
-npm start
-```
+Demo pages load stock photography from `images.unsplash.com`, which is allowed in `next.config.ts`.
 
-Next steps / optional
----------------------
+## Contact
 
-- Add Supabase or your preferred DB to persist submissions — I can scaffold this if you want.
-- Configure a hosted SMTP (e.g., SendGrid, Mailgun, or Resend) and update `.env.local`.
-- Run `npm audit` and fix vulnerabilities as needed.
+For enquiries about this project, contact: `your-email@example.com`
 
-If you want, I can run `npm audit fix` and test SMTP using your credentials (you can add them to `.env.local`).
-
+<!-- Replace the placeholder above with a public business address. Do not add personal emails or secrets. -->
